@@ -1,0 +1,15 @@
+import bpy
+
+
+class HelloWorldPanel(bpy.types.Panel):
+    bl_idname = "OBJECT_PT_hello_world"
+    bl_label = "Hello World"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    bl_context = "object"
+
+    def draw(self, context):
+        self.layout.label(text="Hello World")
+
+
+bpy.utils.register_class(HelloWorldPanel)
