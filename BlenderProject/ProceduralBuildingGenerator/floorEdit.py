@@ -1,7 +1,7 @@
 import bpy  
 from bpy.types import Operator  
-from bpy.props import FloatVectorProperty, FloatProperty  
-  s
+from bpy.props import FloatVectorProperty, FloatProperty, IntProperty  
+  
 class ScaleOperator(bpy.types.Operator):  
  """Scale Operator"""  
  bl_idname = "object.scale_operator"  
