@@ -10,7 +10,9 @@ bl_info = {
 
 import bpy
 
-from pbg.floorEdit import AddFloor
+from pbg.floorEdit import AddFloor, RemoveFloor
+from pbg.buildingGenerator import GenerateBuilding
+
 
 # Creates Blender Main Panel Controller
 class MainPanelPBG(bpy.types.Panel):
@@ -31,7 +33,9 @@ class MainPanelPBG(bpy.types.Panel):
         # Check if floor is created
         floorObj = bpy.context.scene.objects.get("Floor")
         if(floorObj):
-            print("There is a floor")
+            row.operator("pbg.generate", text="Generate Building", icon='GREASEPENCIL')
+            row = layout.row()
+            row.operator(RemoveFloor.bl_idname, text="Remove floor", icon='PANEL_CLOSE')
         else:
             row.operator(AddFloor.bl_idname, text="Create floor", icon='MESH_PLANE')
 

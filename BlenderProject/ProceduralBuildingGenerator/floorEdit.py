@@ -1,7 +1,8 @@
 import bpy  
 from bpy.types import Operator  
 from bpy.props import FloatVectorProperty, FloatProperty, IntProperty  
-  
+                
+# Add Floor operator
 class AddFloor(bpy.types.Operator):
     bl_label = "Add Floor with parameters"
     bl_idname = "pbg.addfloor"
@@ -24,16 +25,40 @@ def addFloor(context, operator, size):
     
     # Modify name
     plane.name = "Floor"
+
+
+# Remove floor operator    
+class RemoveFloor(bpy.types.Operator):
+    bl_label = "Remove Floor"
+    bl_idname = "pbg.removefloor"
     
-    renameMesh(plane)
+    def execute(self, context):
+        
+        # Creates the floor base
+        removeFloor(self, context)
+        
+        return{'FINISHED'}
+
+# Creates the base floor   
+def removeFloor(context, operator):
+    
+    # Get created cube
+    bpy.ops.object.mode_set( mode = 'OBJECT' )
+    plane = bpy.data.objects['Floor'].select_set(True)
+    
+    bpy.ops.object.delete() 
             
-            
+
+
+# Class Initialization
 def register():
     bpy.utils.register_class(AddFloor)
+    bpy.utils.register_class(RemoveFloor)
 
 
 def unregister():
     bpy.utils.unregister_class(AddFloor)
+    bpy.utils.unregister_class(RemoveFloor)
 
 
 if __name__ == "__main__":
