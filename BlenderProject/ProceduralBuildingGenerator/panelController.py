@@ -10,7 +10,7 @@ bl_info = {
 
 import bpy
 
-
+from pbg.floorEdit import ScaleOperator
 
 class MainPanelPBG(bpy.types.Panel):
     bl_label = "Procedural Building Generator"
@@ -26,7 +26,9 @@ class MainPanelPBG(bpy.types.Panel):
         row.label(text="Floor", icon='OBJECT_ORIGIN')
         
         row = layout.row()
-        row.operator(ScaleOperator.bl_idname)
+        row.operator(ScaleOperator.bl_idname, text="Modify Floor")
+        
+        row.prop(ScaleOperator.floorNum, "hide_select")
         
         row = layout.row()
         # Check if floor is created
@@ -80,11 +82,13 @@ class AddFloor(bpy.types.Operator):
 def register():
     bpy.utils.register_class(MainPanelPBG)
     bpy.utils.register_class(AddFloor)
+    bpy.utils.register_class(ScaleOperator)
 
 
 def unregister():
     bpy.utils.unregister_class(MainPanelPBG)
-    bpy.utils.register_class(AddFloor)
+    bpy.utils.unregister_class(AddFloor)
+    bpy.utils.unregister_class(ScaleOperator)
 
 
 if __name__ == "__main__":
