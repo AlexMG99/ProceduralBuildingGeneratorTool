@@ -1,6 +1,11 @@
 import bpy  
 from bpy.types import Operator  
 from bpy.props import FloatVectorProperty, FloatProperty, IntProperty  
+
+import random
+
+# Import rules fuinctions
+from pbg import rules
                 
 # Add Floor operator
 class AddFloor(bpy.types.Operator):
@@ -22,6 +27,11 @@ def addFloor(context, operator, size):
     
     # Get created cube
     plane = bpy.context.selected_objects[0]
+    
+    # Generate random floor
+    numCuts = random.randint(1,3)
+    edgeSplit = random.randint(0, len(plane.data.edges))
+    rules.splitMesh(plane, numCuts, edgeSplit)
     
     # Modify name
     plane.name = "Floor"
