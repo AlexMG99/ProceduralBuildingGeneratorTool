@@ -31,7 +31,7 @@ class MainPanelPBG(bpy.types.Panel):
         row = layout.row()
         
         # Check if floor is created
-        floorObj = bpy.context.scene.objects.get("Floor")
+        floorObj = bpy.data.collections.get("Building")
         if(floorObj):
             row.operator("pbg.generate", text="Generate Building", icon='GREASEPENCIL')
             row = layout.row()

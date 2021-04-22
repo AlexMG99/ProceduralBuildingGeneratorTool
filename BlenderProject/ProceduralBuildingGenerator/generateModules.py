@@ -59,6 +59,39 @@ def generateModuleWindow(obj):
 
                                                              
                                                              
-def generateBuildingFloor(obj, rowX, rowY):
-    generateModuleWindow(obj)
+def generateBuildingFloor(col, size):
+    i = 0
+    while i < col:
+        # Generate a new cube
+        bpy.ops.mesh.primitive_plane_add(scale=(size[0], size[1], size[2]))
+    
+        # Get created cube
+        plane = bpy.context.selected_objects[0]
+        plane.name = "Module " + str(i)
+        
+        # Generate Module and move
+        generateModuleWindow(plane)
+        bpy.data.objects[plane.name].select_set(True)
+        bpy.ops.transform.translate(value=(2.0 * i, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+
+        i += 1
+    
+    # Select all module objects
+    collection = bpy.data.collections.get('Building')
+    
+    for obj in collection.objects:
+        obj.select_set(True)
+    
+    # Combine all objects in one
+    bpy.ops.object.join()
+    bpy.ops.object.editmode_toggle()
+    
+    # Go to edit mode, edge selection modes
+    bpy.ops.object.mode_set( mode = 'EDIT' )
+    bpy.ops.mesh.select_mode( type = 'EDGE' )
+    bpy.ops.mesh.select_all( action = 'SELECT' )
+    
+    bpy.ops.mesh.remove_doubles(threshold=0.02)
+
+
     

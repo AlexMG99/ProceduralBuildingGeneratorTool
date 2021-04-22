@@ -27,20 +27,14 @@ class AddFloor(bpy.types.Operator):
 
 # Creates the base floor   
 def addFloor(context, operator, size):
+    collection = bpy.data.collections.new("Building")
+    bpy.context.scene.collection.children.link(collection)
+
+    # NOTE the use of 'collection.name' to account for potential automatic renaming
+    layer_collection = bpy.context.view_layer.layer_collection.children[collection.name]
+    bpy.context.view_layer.active_layer_collection = layer_collection
     
-    # Generate a new cube
-    bpy.ops.mesh.primitive_plane_add(scale=(size[0], size[1], size[2]))
-    
-    # Get created cube
-    plane = bpy.context.selected_objects[0]
-    
-    # Generate random floor
-    numCuts = random.randint(1,3)
-    edgeSplit = random.randint(0, len(plane.data.edges))
-    generateModules.generateModuleWindow(plane)
-    
-    # Modify name
-    plane.name = "Floor"
+    generateModules.generateBuildingFloor(6, size)
 
 
 # Remove floor operator    
@@ -58,11 +52,13 @@ class RemoveFloor(bpy.types.Operator):
 # Creates the base floor   
 def removeFloor(context, operator):
     
-    # Get created cube
-    bpy.ops.object.mode_set( mode = 'OBJECT' )
-    plane = bpy.data.objects['Floor'].select_set(True)
+    # Get collection
+    collection = bpy.data.collections.get('Building')
+ 
+    for obj in collection.objects:
+        bpy.data.objects.remove(obj, do_unlink=True)
     
-    bpy.ops.object.delete() 
+    bpy.data.collections.remove(collection)
             
 
 
