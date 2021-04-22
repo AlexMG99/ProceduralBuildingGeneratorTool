@@ -15,19 +15,14 @@ def splitMesh(obj, numCuts, edgeIndex):
                                                 "object_index":0, 
                                                 "edge_index":edgeIndex, 
                                                 "mesh_select_mode_init":(False, False, True)}, 
-                                                TRANSFORM_OT_edge_slide={"value":0.0, 
-                                                "single_side":False, "use_even":False, 
-                                                "flipped":False, 
+                                                TRANSFORM_OT_edge_slide={"value":0.0,
                                                 "use_clamp":True, 
                                                 "mirror":True, 
-                                                "snap":False, 
-                                                "snap_target":'CLOSEST', 
-                                                "snap_point":(0, 0, 0), 
-                                                "snap_align":False, 
-                                                "snap_normal":(0, 0, 0), 
-                                                "correct_uv":True, 
-                                                "release_confirm":False, 
-                                                "use_accurate":False})
+                                                "correct_uv":True})
     
     bpy.ops.object.editmode_toggle()
-    bpy.ops.object.mode_set( mode = 'OBJECT' )
+    bpy.ops.object.mode_set( mode = 'OBJECT' ) 
+                                                            
+
+
+    

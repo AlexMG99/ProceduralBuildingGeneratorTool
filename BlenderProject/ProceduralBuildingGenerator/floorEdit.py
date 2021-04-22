@@ -6,6 +6,12 @@ import random
 
 # Import rules fuinctions
 from pbg import rules
+from pbg import generateModules
+
+# Reload module
+import imp
+imp.reload(rules)
+imp.reload(generateModules)
                 
 # Add Floor operator
 class AddFloor(bpy.types.Operator):
@@ -31,7 +37,7 @@ def addFloor(context, operator, size):
     # Generate random floor
     numCuts = random.randint(1,3)
     edgeSplit = random.randint(0, len(plane.data.edges))
-    rules.splitMesh(plane, numCuts, edgeSplit)
+    generateModules.generateModuleWindow(plane)
     
     # Modify name
     plane.name = "Floor"
