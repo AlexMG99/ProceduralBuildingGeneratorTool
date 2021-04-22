@@ -34,7 +34,7 @@ def addFloor(context, operator, size):
     layer_collection = bpy.context.view_layer.layer_collection.children[collection.name]
     bpy.context.view_layer.active_layer_collection = layer_collection
     
-    generateModules.generateBuildingFloor(6, size)
+    generateModules.generateBuildingFloor(4, size)
 
 
 # Remove floor operator    

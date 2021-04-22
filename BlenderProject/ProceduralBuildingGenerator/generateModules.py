@@ -58,8 +58,7 @@ def generateModuleWindow(obj):
     bpy.ops.transform.rotate(value=-1.5708, orient_axis='X', orient_type='GLOBAL')
 
                                                              
-                                                             
-def generateBuildingFloor(col, size):
+def generateBuildingSide(size, side, col):
     i = 0
     while i < col:
         # Generate a new cube
@@ -67,14 +66,33 @@ def generateBuildingFloor(col, size):
     
         # Get created cube
         plane = bpy.context.selected_objects[0]
-        plane.name = "Module " + str(i)
+        plane.name = "Module " + str(side) + "." + str(i)
         
         # Generate Module and move
         generateModuleWindow(plane)
         bpy.data.objects[plane.name].select_set(True)
-        bpy.ops.transform.translate(value=(2.0 * i, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
-
+        
+        if side == 0:
+            bpy.ops.transform.translate(value=(2.0 * i, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+        elif side == 1:
+            bpy.ops.transform.translate(value=(2.0 * (col - 1) + 1.0 , - 2.0 * i - 1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+        elif side == 2:
+            bpy.ops.transform.translate(value=(2.0 * (col - 1) - 2.0 * i, - 2.0 * col, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+        elif side == 3:
+            bpy.ops.transform.translate(value=(-1.0, - 2.0 * (col - 1) + 2.0 * i - 1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+        
+        bpy.ops.transform.rotate(value=-1.5708 * side, orient_axis='Z', orient_type='GLOBAL')
+        
         i += 1
+        
+    return plane.name
+
+                                                             
+def generateBuildingFloor(col, size):
+    side = 0
+    while side < 4:
+        lastModName = generateBuildingSide(size, side, col);
+        side += 1
     
     # Select all module objects
     collection = bpy.data.collections.get('Building')
@@ -85,6 +103,9 @@ def generateBuildingFloor(col, size):
     # Combine all objects in one
     bpy.ops.object.join()
     bpy.ops.object.editmode_toggle()
+    
+    # Rename
+    bpy.data.objects.get(lastModName).name = "Floor 1"
     
     # Go to edit mode, edge selection modes
     bpy.ops.object.mode_set( mode = 'EDIT' )
