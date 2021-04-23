@@ -10,8 +10,12 @@ bl_info = {
 
 import bpy
 
-from pbg.floorEdit import AddFloor, RemoveFloor
-from pbg.buildingGenerator import GenerateBuilding
+from pbg.generateBuilding import *
+from pbg import parameters
+
+# Reload module
+import imp
+imp.reload(parameters)
 
 
 # Creates Blender Main Panel Controller
@@ -25,19 +29,30 @@ class MainPanelPBG(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         
-        row = layout.row()
-        row.label(text="Floor", icon='OBJECT_ORIGIN')
+        box = layout.box()
+        row = box.row()
+        row.label(text="Building parameters", icon='OBJECT_ORIGIN')
         
         row = layout.row()
         
         # Check if floor is created
         floorObj = bpy.data.collections.get("Building")
         if(floorObj):
-            row.operator("pbg.generate", text="Generate Building", icon='GREASEPENCIL')
-            row = layout.row()
-            row.operator(RemoveFloor.bl_idname, text="Remove floor", icon='PANEL_CLOSE')
+            row = box.row()
+            row.operator(RemoveBuilding.bl_idname, text="Remove building", icon='PANEL_CLOSE')
         else:
-            row.operator(AddFloor.bl_idname, text="Create floor", icon='MESH_PLANE')
+            # Parameter section
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "moduleSize")
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "numFloor")
+            row.prop(context.scene.buildingParameters, "rowX")
+            row.prop(context.scene.buildingParameters, "rowY")
+            
+            # Generate Building button
+            row = layout.row()
+            row.operator(GenerateBuilding.bl_idname, text="Generate Building", icon='MESH_PLANE')
 
 
 def register():
