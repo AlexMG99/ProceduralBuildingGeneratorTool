@@ -59,7 +59,9 @@ class MainPanelPBG(bpy.types.Panel):
         row = layout.row()
         row.prop(context.scene.utilitiesParameters, "edgeIdx")
         row.prop(context.scene.utilitiesParameters, "objName")
+        row = layout.row()
         row.operator(SelectEdge.bl_idname, text="Select Object Edge")
+        row.operator(SelectFace.bl_idname, text="Select Object Face")
 
 
 def register():

@@ -9,8 +9,27 @@ from pbg import parameters
 import imp
 imp.reload(parameters)
 
+
+# Select object edge by index operator
+class SelectFace(bpy.types.Operator):
+    bl_label = "Select face by number"
+    bl_idname = "pbg.selectface"
+    
+    def execute(self, context):
+        bpy.data.objects[bpy.context.scene.utilitiesParameters.objName].select_set(True)
+        obj = bpy.context.selected_objects[0]
+    
+        selectFaceByIndex(obj, bpy.context.scene.utilitiesParameters.edgeIdx)
+        
+        return{'FINISHED'}
+
+
 # Select object face by index
-def selectMeshByIndex(obj, idx):
+def selectFaceByIndex(obj, idx):
+    
+    # Go to edit mode, edge selection modes
+    bpy.ops.object.mode_set( mode = 'EDIT')
+    bpy.ops.mesh.select_mode( type = 'FACE')
     
     me = obj.data
     bm = bmesh.from_edit_mesh(me)
@@ -21,6 +40,24 @@ def selectMeshByIndex(obj, idx):
 
     # Show the updates in the viewports
     bmesh.update_edit_mesh(me, True)
+    
+# Select object face by index
+def deselectFaceByIndex(obj, idx):
+    
+    # Go to edit mode, edge selection modes
+    bpy.ops.object.mode_set( mode = 'EDIT')
+    bpy.ops.mesh.select_mode( type = 'FACE')
+    
+    me = obj.data
+    bm = bmesh.from_edit_mesh(me)
+
+    # notice in Bmesh polygons are called faces
+    bm.faces.ensure_lookup_table()
+    bm.faces[idx].select_set(False)  # select index
+
+    # Show the updates in the viewports
+    bmesh.update_edit_mesh(me, True)
+
 
 # Select object edge by index operator
 class SelectEdge(bpy.types.Operator):
@@ -28,11 +65,11 @@ class SelectEdge(bpy.types.Operator):
     bl_idname = "pbg.selectedge"
     
     def execute(self, context):
-        selectEdgeByIdx(bpy.context.scene.utilitiesParameters.objName, bpy.context.scene.utilitiesParameters.edgeIdx, self, context)
+        selectEdgeByIdx(bpy.context.scene.utilitiesParameters.objName, bpy.context.scene.utilitiesParameters.edgeIdx)
         
         return{'FINISHED'}
 
-def selectEdgeByIdx(name, idx, self, context):
+def selectEdgeByIdx(name, idx):
     
     bpy.data.objects[name].select_set(True)
     obj = bpy.context.selected_objects[0]
@@ -55,10 +92,12 @@ def selectEdgeByIdx(name, idx, self, context):
 # Class Inizialization
 def register():
     bpy.utils.register_class(SelectEdge)
+    bpy.utils.register_class(SelectFace)
 
 
 def unregister():
     bpy.utils.unregister_class(SelectEdge)
+    bpy.utils.unregister_class(SelectFace)
 
 
 if __name__ == "__main__":

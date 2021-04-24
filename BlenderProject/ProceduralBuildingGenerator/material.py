@@ -1,6 +1,7 @@
 import bpy, bmesh
 import os
 
+# Generate window UVS
 def generateUVS(obj):
     
     # Go to edit mode, edge selection modes
@@ -24,22 +25,55 @@ def generateUVS(obj):
     # Show the updates in the viewports
     bmesh.update_edit_mesh(me, True)
 
+# Add material with texture
 def addMaterial(obj, name):
     
     # Select object 
     bpy.data.objects[obj.name].select_set(True)
     
-    if "Wall" in bpy.data.materials:
-        mat = bpy.data.materials.get("Wall")
+    if name in bpy.data.materials:
+        mat = bpy.data.materials.get(name)
     else:
         mat = createMaterial(obj, name)
     
     obj.data.materials.append(mat)
     obj.data.materials[0] = mat
     
+
+# Add material window to object
+def addMaterialBase(obj, name):
+    bpy.data.objects[obj.name].select_set(True)
+    
+    if name in bpy.data.materials:
+        mat = bpy.data.materials.get(name)
+    else:
+        mat = createMaterialBase(obj, name)
+    
+    obj.data.materials.append(mat)
+    bpy.context.object.active_material_index = len(obj.data.materials) - 1
+    
+    bpy.ops.object.material_slot_assign()
+
+
+def createMaterialBase(obj, texName):
+    # Create new material
+    mat = bpy.data.materials.new(name=texName)
+    mat.use_nodes = True
+    
+    # Create material by name
+    if texName == "Frame":
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.031, 0.031, 0.031, 1)
+    elif texName == "Glass":
+        mat.node_tree.nodes["Principled BSDF"].inputs["Transmission"].default_value = 1
+        mat.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0
+        mat.blend_method = 'HASHED'
+        mat.refraction_depth = 0.001
+    elif texName == "Bottom":
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (1, 1, 1, 1)
+        
+    return mat
     
 def createMaterial(obj, texName):
-    
     # Create new material
     mat = bpy.data.materials.new(name=texName)
     mat.use_nodes = True
