@@ -13,7 +13,7 @@ import imp
 imp.reload(parameters)
 imp.reload(generateModules)
                 
-# Add Floor operator
+# Generate Building operator
 class GenerateBuilding(bpy.types.Operator):
     bl_label = "Generate Building with parameters"
     bl_idname = "pbg.generatebuilding"
@@ -24,7 +24,7 @@ class GenerateBuilding(bpy.types.Operator):
         
         return{'FINISHED'}
 
-# Creates the base floor   
+# Creates the building exterior structure  
 def generateBuilding(context, operator):
     collection = bpy.data.collections.new("Building")
     bpy.context.scene.collection.children.link(collection)
@@ -35,8 +35,8 @@ def generateBuilding(context, operator):
     
     buildingParameters = bpy.context.scene.buildingParameters
     
-    #generateModules.generateBuilding(buildingParameters.numFloor, buildingParameters.rowX, buildingParameters.rowY, bpy.context.scene.buildingParameters.moduleSize)
-    generateModules.generateBuildingSide(bpy.context.scene.buildingParameters.moduleSize, 0, 1, 1, 0)
+    generateModules.generateBuilding(buildingParameters.numFloor, buildingParameters.rowX, buildingParameters.rowY, bpy.context.scene.buildingParameters.moduleSize)
+    # generateModules.generateBuildingSide(buildingParameters.moduleSize, 0, 1, 1, 0)
 
 # Remove floor operator    
 class RemoveBuilding(bpy.types.Operator):
@@ -45,12 +45,12 @@ class RemoveBuilding(bpy.types.Operator):
     
     def execute(self, context):
         
-        # Creates the floor base
+        # Delete the building collection
         removeBuilding(self, context)
         
         return{'FINISHED'}
 
-# Creates the base floor   
+# Delete the building collection   
 def removeBuilding(context, operator):
     
     # Get collection

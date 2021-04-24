@@ -11,12 +11,13 @@ bl_info = {
 import bpy
 
 from pbg.generateBuilding import *
+from pbg.utilities import *
+
 from pbg import parameters
 
 # Reload module
 import imp
 imp.reload(parameters)
-
 
 # Creates Blender Main Panel Controller
 class MainPanelPBG(bpy.types.Panel):
@@ -53,6 +54,12 @@ class MainPanelPBG(bpy.types.Panel):
             # Generate Building button
             row = layout.row()
             row.operator(GenerateBuilding.bl_idname, text="Generate Building", icon='MESH_PLANE')
+            
+        # Auxiliar help
+        row = layout.row()
+        row.prop(context.scene.utilitiesParameters, "edgeIdx")
+        row.prop(context.scene.utilitiesParameters, "objName")
+        row.operator(SelectEdge.bl_idname, text="Select Object Edge")
 
 
 def register():

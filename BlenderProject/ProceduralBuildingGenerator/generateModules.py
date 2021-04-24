@@ -2,16 +2,16 @@ import bpy, bmesh
 import random
 
 from pbg import utilities
+from pbg import material
 
 import imp
 imp.reload(utilities)
+imp.reload(material)
 
 # Generate module window
 def generateModuleWindow(obj):
     
     bpy.data.objects[obj.name].select_set(True)
-    obj.rotation_mode = 'XYZ'
-    obj.rotation_euler = (0,0,0)
     
     # Go to edit mode, face selection modes
     bpy.ops.object.mode_set( mode = 'EDIT' )
@@ -57,6 +57,11 @@ def generateModuleWindow(obj):
                                                              "mirror":False}, 
                                                              TRANSFORM_OT_translate={"value":(0, 0, -0.2)})
                                                              
+    # Generate UVS and add material to object
+    bpy.ops.mesh.select_all(action = 'DESELECT') #Deselecting all
+    material.generateUVS(obj)
+    material.addMaterial(obj, "Wall")
+    
     # Rotate building 90 degrees to align it with the building
     bpy.ops.object.mode_set( mode = 'OBJECT' )
     bpy.ops.transform.rotate(value=-1.5708, orient_axis='X', orient_type='GLOBAL')
@@ -73,11 +78,13 @@ def generateBuildingSide(size, side, colX, colY, cFloor):
         plane.name = "Module " + str(side) + "." + str(i)
         
         # Generate Module and move
-        rand = random.randint(0,1)
+        """ rand = random.randint(0, 1)
         if rand == 0:
             generateModuleWindow(plane)
         else:
-            bpy.ops.transform.rotate(value=-1.5708, orient_axis='X', orient_type='GLOBAL')
+            bpy.ops.transform.rotate(value=-1.5708, orient_axis='X', orient_type='GLOBAL') """
+            
+        generateModuleWindow(plane)
             
         bpy.data.objects[plane.name].select_set(True)
         
@@ -115,7 +122,6 @@ def generateBuilding(floor, colX, colY, size):
     while currFloor < floor:
         # Generate one floor
         lastModName = generateBuildingFloor(currFloor, colX, colY, size)
-        # bpy.data.objects["Floor " + str(currFloor)].location = (0,0,20.0 * currFloor)
         currFloor += 1   
     
     # Select all module objects

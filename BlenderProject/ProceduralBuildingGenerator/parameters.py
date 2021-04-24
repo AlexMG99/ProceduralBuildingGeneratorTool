@@ -12,6 +12,15 @@ from bpy.props import (StringProperty,
 from bpy.types import (PropertyGroup,)
                        
 
+class UtilitiesParameters(PropertyGroup):
+    edgeIdx : IntProperty(
+        name="Edge Index",
+        default = 0)
+        
+    objName : StringProperty(
+        name="Object Name",
+        default = "NoName")
+
 class BuildingParameters(PropertyGroup):     
                      
     numFloor : IntProperty(
@@ -52,12 +61,16 @@ class BuildingParameters(PropertyGroup):
 # Initialization
 def register():
     bpy.utils.register_class(BuildingParameters)
+    bpy.utils.register_class(UtilitiesParameters)
     bpy.types.Scene.buildingParameters = PointerProperty(name="Building parameters", type=BuildingParameters)
+    bpy.types.Scene.utilitiesParameters = PointerProperty(name="Utilities parameters", type=UtilitiesParameters)
 
 
 def unregister():
     bpy.utils.unregister_class(BuildingParameters)
+    bpy.utils.unregister_class(UtilitiesParameters)
     del bpy.types.Scene.buildingParameters
+    del bpy.types.Scene.utilitiesParameters
 
 
 if __name__ == "__main__":
