@@ -35,8 +35,8 @@ def generateBuilding(context, operator):
     
     buildingParameters = bpy.context.scene.buildingParameters
     
-    generateModules.generateBuilding(buildingParameters.numFloor, buildingParameters.rowX, buildingParameters.rowY, bpy.context.scene.buildingParameters.moduleSize)
-    # generateModules.generateBuildingSide(buildingParameters.moduleSize, 0, 1, 1, 0)
+    #generateModules.generateBuilding(buildingParameters.numFloor, buildingParameters.rowX, buildingParameters.rowY, bpy.context.scene.buildingParameters.moduleSize)
+    generateModules.generateBuildingSide(buildingParameters.moduleSize, 0, 1, 1, 0)
 
 # Remove floor operator    
 class RemoveBuilding(bpy.types.Operator):

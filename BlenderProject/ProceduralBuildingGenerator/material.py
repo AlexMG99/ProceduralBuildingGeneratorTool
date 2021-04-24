@@ -66,6 +66,8 @@ def createMaterialBase(obj, texName):
     elif texName == "Glass":
         mat.node_tree.nodes["Principled BSDF"].inputs["Transmission"].default_value = 1
         mat.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0
+        mat.use_screen_refraction = True
+
         mat.blend_method = 'HASHED'
         mat.refraction_depth = 0.001
     elif texName == "Bottom":
@@ -80,7 +82,7 @@ def createMaterial(obj, texName):
     cwd = os.getcwd()
     
     # TODO: Change relative path
-    texturePath = bpy.path.abspath(cwd + "/2.91/scripts/startup/pbg/textures/")
+    texturePath = bpy.path.abspath(cwd + "/textures/")
     
     # Load Images
     imgDiffuse = bpy.data.images.load(texturePath + texName + "_Diffuse.tif")

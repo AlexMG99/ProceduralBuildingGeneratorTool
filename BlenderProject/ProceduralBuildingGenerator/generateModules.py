@@ -77,7 +77,7 @@ def generateModuleWindow(obj):
     
     bpy.ops.mesh.duplicate()
     bpy.ops.transform.resize(value=(1, 0.5, 1), orient_type ='GLOBAL')
-    bpy.ops.transform.translate(value=(0, -0.25, 0.15), orient_type ='GLOBAL')
+    bpy.ops.transform.translate(value=(0, -0.27, 0.15), orient_type ='GLOBAL')
     
     utilities.deselectFaceByIndex(obj, 13)
     
