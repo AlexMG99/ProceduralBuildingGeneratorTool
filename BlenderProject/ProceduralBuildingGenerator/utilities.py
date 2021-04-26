@@ -40,6 +40,27 @@ def selectFaceByIndex(obj, idx):
 
     # Show the updates in the viewports
     bmesh.update_edit_mesh(me, True)
+
+# Select object face by index
+def selectFacesByIndex(obj, idx):
+    
+    # Go to edit mode, edge selection modes
+    bpy.ops.object.mode_set( mode = 'EDIT')
+    bpy.ops.mesh.select_mode( type = 'FACE')
+    bpy.ops.mesh.select_all(action = 'DESELECT') 
+    
+    me = obj.data
+    bm = bmesh.from_edit_mesh(me)
+
+    # notice in Bmesh polygons are called faces
+    bm.faces.ensure_lookup_table()
+    it = 0
+    while it < len(idx):
+        bm.faces[idx[it]].select_set(True)  # select index
+        it += 1
+
+    # Show the updates in the viewports
+    bmesh.update_edit_mesh(me, True)
     
 # Select object face by index
 def deselectFaceByIndex(obj, idx):
