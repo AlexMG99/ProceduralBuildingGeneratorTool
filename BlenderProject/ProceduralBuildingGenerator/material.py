@@ -82,7 +82,7 @@ def createMaterial(obj, texName):
     cwd = os.getcwd()
     
     # TODO: Change relative path
-    texturePath = bpy.path.abspath(cwd + "/textures/")
+    texturePath = bpy.path.abspath(cwd + "/2.91/scripts/startup/pbg/textures/")
     
     # Load Images
     imgDiffuse = bpy.data.images.load(texturePath + texName + "_Diffuse.tif")
