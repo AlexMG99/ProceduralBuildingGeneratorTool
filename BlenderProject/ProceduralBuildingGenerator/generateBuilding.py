@@ -37,7 +37,7 @@ def generateBuilding():
     buildingParameters = bpy.context.scene.buildingParameters
     
     generateBuildingStructure(buildingParameters.numFloor, buildingParameters.rowX, buildingParameters.rowY, bpy.context.scene.buildingParameters.moduleSize)
-    #generateBuildingFacade(0, 1, 1, 0, buildingParameters.moduleSize)
+    # generateBuildingFacade(0, 1, 1, 0, buildingParameters.moduleSize)
     
 # Generate one building side                                                             
 def generateBuildingFacade(side, colX, colY, cFloor, size):
@@ -68,8 +68,12 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
         else:
             generateModuleWall(plane) """
         
-        generateModules.generateModuleWindow(plane, Vector((0.5, 0.75)))
-            
+        # Add door
+        if cFloor == 0 and side == 0 and i == int(colX * 0.5):
+            generateModules.generateModuleDoor(plane, 0.5, 0.75)
+        else:
+            generateModules.generateModuleWindow(plane, Vector((0.5, 0.75)))
+                
         bpy.data.objects[plane.name].select_set(True)
         
         # Building one module out

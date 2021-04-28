@@ -1,8 +1,13 @@
 import bpy, bmesh
 import os
 
+from pbg import utilities
+
+import imp
+imp.reload(utilities)
+
 # Generate window UVS
-def generateUVS(obj):
+def generateUVS(obj, idx):
     
     # Go to edit mode, edge selection modes
     bpy.ops.object.mode_set( mode = 'EDIT')
@@ -13,10 +18,8 @@ def generateUVS(obj):
 
     # notice in Bmesh polygons are called edge
     bm.edges.ensure_lookup_table()
-    bm.edges[1].select_set(True)
-    bm.edges[4].select_set(True)
-    bm.edges[10].select_set(True)
-    bm.edges[15].select_set(True)
+    
+    utilities.selectEdgesByIndex(obj.name, idx)
     
     # Mark Edge Seam and smart UV
     bpy.ops.mesh.mark_seam(clear=False)
@@ -82,7 +85,8 @@ def createMaterial(obj, texName):
     cwd = os.getcwd()
     
     # TODO: Change relative path
-    texturePath = bpy.path.abspath(cwd + "/2.91/scripts/startup/pbg/textures/")
+    texturePath = bpy.path.abspath(cwd + "/textures/")
+    # /2.91/scripts/startup/pbg
     
     # Load Images
     imgDiffuse = bpy.data.images.load(texturePath + texName + "_Diffuse.tif")

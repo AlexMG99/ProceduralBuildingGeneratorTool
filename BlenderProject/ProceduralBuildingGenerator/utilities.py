@@ -90,6 +90,28 @@ class SelectEdge(bpy.types.Operator):
         
         return{'FINISHED'}
 
+def selectEdgesByIndex(name, idx):
+    
+    bpy.data.objects[name].select_set(True)
+    obj = bpy.context.selected_objects[0]
+    
+    # Go to edit mode, edge selection modes
+    bpy.ops.object.mode_set( mode = 'EDIT')
+    bpy.ops.mesh.select_mode( type = 'EDGE')
+    
+    me = obj.data
+    bm = bmesh.from_edit_mesh(me)
+    
+    # notice in Bmesh polygons are called faces
+    bm.faces.ensure_lookup_table()
+    it = 0
+    while it < len(idx):
+        bm.edges[idx[it]].select_set(True)  # select index
+        it += 1
+
+    # Show the updates in the viewports
+    bmesh.update_edit_mesh(me, True)
+
 def selectEdgeByIdx(name, idx):
     
     bpy.data.objects[name].select_set(True)
