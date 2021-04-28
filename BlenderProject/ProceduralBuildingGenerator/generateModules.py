@@ -9,7 +9,7 @@ imp.reload(utilities)
 imp.reload(material)
 
 # Generate module window
-def generateModuleWindow(obj, windowSize):
+def generateModuleWindow(obj, windowSize, windowType):
     
     bpy.data.objects[obj.name].select_set(True)
     
@@ -66,13 +66,7 @@ def generateModuleWindow(obj, windowSize):
     # ------------------------------------------------------------------------------------------------------ #
                                                          
     # Generate Window
-    size = random.randint(0,1)
-    if windowSize[0] == 0.5:
-        windowType = 1  
-    else:
-        windowType = 0
-        
-    generateWindow(obj, windowType)
+    generateWindow(obj, windowSize[1], windowType)
     
     # Rotate building 90 degrees to align it with the building
     bpy.ops.object.mode_set( mode = 'OBJECT' )
@@ -150,7 +144,7 @@ def generateModuleWall(obj):
 
 
 # Generate the window
-def generateWindow(obj, windowType):
+def generateWindow(obj, windowSize, windowType):
     # Go to edit mode, edge selection modes
     bpy.ops.mesh.select_all(action = 'DESELECT')
     bpy.ops.object.mode_set( mode = 'EDIT')
@@ -192,7 +186,7 @@ def generateWindow(obj, windowType):
     if windowType == 0:
         generateOneWindow(obj)
     elif windowType == 1:
-        generateTwoWindows(obj)
+        generateTwoWindows(obj, windowSize)
 
 
 def generateOneWindow(obj):
@@ -245,9 +239,9 @@ def generateOneWindow(obj):
                                     
                 
     
-def generateTwoWindows(obj):
-    bpy.ops.transform.resize(value=(1.1, 0.5, 1.1), orient_type ='GLOBAL')
-    bpy.ops.transform.translate(value=(0, -0.27, 0.15), orient_type ='GLOBAL')
+def generateTwoWindows(obj, windowSize):
+    bpy.ops.transform.resize(value=(1.05, 0.6, 1.1), orient_type ='GLOBAL')
+    bpy.ops.transform.translate(value=(0, -0.4 * windowSize + 0.05, 0.15), orient_type ='GLOBAL')
     
     bpy.ops.mesh.inset(thickness=0.05, depth=0)
     
@@ -265,7 +259,7 @@ def generateTwoWindows(obj):
     bpy.ops.mesh.select_more()
     bpy.ops.mesh.select_more()
     
-    windowOpen = random.uniform(0.1, 0.5)
+    windowOpen = random.uniform(0.1 * windowSize, windowSize * 0.5)
     bpy.ops.mesh.duplicate_move(MESH_OT_duplicate={"mode":1}, TRANSFORM_OT_translate={"value":(0, windowOpen, - 0.07), "orient_type":'GLOBAL'})
     
 def generateDoor(obj):
