@@ -32,7 +32,7 @@ class BuildingParameters(PropertyGroup):
         )
     
     rowX : IntProperty(
-        name="X:",
+        name="Width:",
         description="Number of modules in X axis",
         default = 5,
         min = 0,
@@ -40,7 +40,7 @@ class BuildingParameters(PropertyGroup):
         )
         
     rowY : IntProperty(
-        name="Y:",
+        name="Depth:",
         description="Number of modules in Y axis",
         default = 5,
         min = 0,
@@ -57,6 +57,48 @@ class BuildingParameters(PropertyGroup):
         min=0.0,
         max=10.0
         )
+        
+    twoColors : BoolProperty(
+        name="Two colors",
+        description="Building with two color configuration for the facade",
+        default= False
+        )
+        
+    wallTexture : BoolProperty(
+        name="Building Texture",
+        description="When active, the building uses a texture for the facade",
+        default= False
+        )
+    
+    windowColor : FloatVectorProperty(  
+       name="Window Color",
+       subtype='COLOR',
+       default=(0.0, 0.0, 0.0, 1.0),
+       precision=2,
+       size=4,
+       min=0.0, max=1.0,
+       description="Chose color of windows"
+       )
+       
+    wallColor : FloatVectorProperty(  
+       name="Wall Color",
+       subtype='COLOR',
+       default=[1.0, 1.0, 1.0, 1.0],
+       precision=2,
+       size=4,
+       min=0.0, max=1.0,
+       description="Chose color of the facade"
+       )
+       
+    wallColorAux : FloatVectorProperty(  
+       name="Wall Color 2",
+       subtype='COLOR',
+       default=(0.8, 0.8, 0.8),
+       precision=2,
+       size=3,
+       min=0.0, max=1.0,
+       description="Chose the secondary color of the facade"
+       )
 
 # Initialization
 def register():

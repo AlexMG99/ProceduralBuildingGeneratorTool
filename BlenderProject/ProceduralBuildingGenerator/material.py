@@ -2,9 +2,11 @@ import bpy, bmesh
 import os
 
 from pbg import utilities
+from pbg import parameters
 
 import imp
 imp.reload(utilities)
+imp.reload(parameters)
 
 # Generate window UVS
 def generateUVS(obj, idx):
@@ -35,7 +37,7 @@ def addMaterial(obj, name):
     bpy.data.objects[obj.name].select_set(True)
     
     if name in bpy.data.materials:
-        mat = bpy.data.materials.get(name)
+        mat = reloadMaterial(name)
     else:
         mat = createMaterial(obj, name)
     
@@ -48,7 +50,7 @@ def addMaterialBase(obj, name):
     bpy.data.objects[obj.name].select_set(True)
     
     if name in bpy.data.materials:
-        mat = bpy.data.materials.get(name)
+        mat = reloadMaterial(name)
     else:
         mat = createMaterialBase(obj, name)
     
@@ -58,6 +60,14 @@ def addMaterialBase(obj, name):
     bpy.ops.object.material_slot_assign()
 
 
+def reloadMaterial(name):
+    mat = bpy.data.materials.get(name)
+    
+    if name == "Frame":
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.buildingParameters.windowColor
+    
+    return mat
+    
 def createMaterialBase(obj, texName):
     # Create new material
     mat = bpy.data.materials.new(name=texName)
@@ -65,7 +75,7 @@ def createMaterialBase(obj, texName):
     
     # Create material by name
     if texName == "Frame":
-        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.031, 0.031, 0.031, 1)
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.buildingParameters.windowColor
     elif texName == "Glass":
         mat.node_tree.nodes["Principled BSDF"].inputs["Transmission"].default_value = 1
         mat.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0
@@ -85,8 +95,8 @@ def createMaterial(obj, texName):
     cwd = os.getcwd()
     
     # TODO: Change relative path
-    texturePath = bpy.path.abspath(cwd + "/textures/")
-    # /2.91/scripts/startup/pbg
+    # texturePath = bpy.path.abspath(cwd + "/textures/")
+    texturePath = bpy.path.abspath(cwd + "/2.91/scripts/startup/pbg/textures/")
     
     # Load Images
     imgDiffuse = bpy.data.images.load(texturePath + texName + "_Diffuse.tif")

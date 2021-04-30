@@ -31,18 +31,29 @@ class MainPanelPBG(bpy.types.Panel):
         layout = self.layout
         
         box = layout.box()
-        row = box.row()
-        row.label(text="Building parameters", icon='OBJECT_ORIGIN')
-        
-        row = layout.row()
         
         # Check if floor is created
         floorObj = bpy.data.collections.get("Building")
         if(floorObj):
+            
+            mat = floorObj.objects[0].data.materials["Frame"]
+
+            # Extra details¡¡
             row = box.row()
+            row.label(text="Texture parameters", icon='BRUSH_DATA')
+            
+            row = box.row()
+            row.prop(mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"], "default_value", text="Window color")
+            
+            # floorObj.objects[0].data.material[1] = mat
+            
+            row = layout.row()
             row.operator(RemoveBuilding.bl_idname, text="Remove building", icon='PANEL_CLOSE')
         else:
             # Parameter section
+            row = box.row()
+            row.label(text="Building parameters", icon='OBJECT_ORIGIN')
+            
             row = box.row()
             row.prop(context.scene.buildingParameters, "moduleSize")
             
@@ -51,9 +62,24 @@ class MainPanelPBG(bpy.types.Panel):
             row.prop(context.scene.buildingParameters, "rowX")
             row.prop(context.scene.buildingParameters, "rowY")
             
+            # Extra details
+            box = layout.box()
+            
+            row = box.row()
+            row.label(text="Texture parameters", icon='BRUSH_DATA')
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "twoColors")
+            row.prop(context.scene.buildingParameters, "wallTexture")
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "windowColor", text="Window color")
+            
             # Generate Building button
             row = layout.row()
             row.operator(GenerateBuilding.bl_idname, text="Generate Building", icon='MESH_PLANE')
+        
+            
             
         # Auxiliar help
         row = layout.row()

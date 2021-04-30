@@ -72,7 +72,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
         """if cFloor == 0 and side == 0 and i == int(colX * 0.5):
             generateModules.generateModuleDoor(plane, 0.5, 0.75)
         else:"""
-        generateModules.generateModuleWindow(plane, Vector((1.0, 1.0)), 1)
+        generateModules.generateModuleDoor(plane, 0.4, 0.9)
                 
         bpy.data.objects[plane.name].select_set(True)
         
@@ -217,7 +217,11 @@ def removeBuilding(context, operator):
     
     # Get collection
     collection = bpy.data.collections.get('Building')
- 
+    
+    # Update material colors
+    mat = collection.objects[0].data.materials["Frame"]
+    bpy.context.scene.buildingParameters.windowColor = mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value
+    
     for obj in collection.objects:
         bpy.data.objects.remove(obj, do_unlink=True)
     

@@ -270,13 +270,10 @@ def generateDoor(obj):
     
     utilities.selectFaceByIndex(obj, 6)
     
-    # Set bottom material
-    material.addMaterialBase(obj, "Bottom")
+    # Set crystal material
+    material.addMaterialBase(obj, "Frame")
     
     bpy.ops.mesh.duplicate()
-    
-    # Create door frame
-    material.addMaterialBase(obj, "Frame")
     
     bpy.ops.transform.translate(value=(0, 0.0, 0.27), orient_type ='GLOBAL')
     
@@ -315,3 +312,9 @@ def generateDoor(obj):
                                                              "use_dissolve_ortho_edges":False, 
                                                              "mirror":False}, 
                                                              TRANSFORM_OT_translate={"value":(0, 0, -0.1)})
+    
+    # Set bottom material
+    bpy.ops.mesh.select_all(action = 'DESELECT')
+    utilities.selectFaceByIndex(obj, 15)
+    material.addMaterialBase(obj, "Bottom")
+    
