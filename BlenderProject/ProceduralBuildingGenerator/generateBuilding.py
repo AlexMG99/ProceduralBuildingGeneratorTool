@@ -36,8 +36,8 @@ def generateBuilding():
     
     buildingParameters = bpy.context.scene.buildingParameters
     
-    # generateBuildingStructure(buildingParameters.numFloor, buildingParameters.rowX, buildingParameters.rowY, bpy.context.scene.buildingParameters.moduleSize)
-    generateBuildingFacade(0, 1, 1, 0, buildingParameters.moduleSize)
+    generateBuildingStructure(buildingParameters.numFloor, buildingParameters.rowX, buildingParameters.rowY, bpy.context.scene.buildingParameters.moduleSize)
+    # generateBuildingFacade(0, 1, 1, 0, buildingParameters.moduleSize)
     
 # Generate one building side                                                             
 def generateBuildingFacade(side, colX, colY, cFloor, size):
@@ -53,7 +53,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
     
     while i < colX:
         turned = False;
-        
+        print(advancement)
         # Generate a new cube
         bpy.ops.mesh.primitive_plane_add(scale=(size[0], size[1], size[2]))
     
@@ -72,9 +72,6 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
         """if cFloor == 0 and side == 0 and i == int(colX * 0.5):
             generateModules.generateModuleDoor(plane, 0.5, 0.75)
         else:"""
-        generateModules.generateModuleDoor(plane, 0.4, 0.9)
-                
-        bpy.data.objects[plane.name].select_set(True)
         
         # Building one module out
         if opened == False and closed == False:
@@ -84,7 +81,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
             # Module Outside
             if turnBuilding == 1:
                 advancement -= 1.0
-                bpy.ops.transform.rotate(value=1.5708, orient_axis='Z', orient_type='GLOBAL')
+                bpy.ops.transform.rotate(value=1.5708, orient_axis='Y', orient_type='LOCAL')
                 turnBuilding = 2
                 turned = True
                 opened = True
@@ -104,7 +101,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
             
             if turnBuilding == 1 or i == colX - 1:    
                 advancement -= 1.0
-                bpy.ops.transform.rotate(value=-1.5708, orient_axis='Z', orient_type='GLOBAL')
+                bpy.ops.transform.rotate(value=-1.5708, orient_axis='Y', orient_type='LOCAL')
                 turnBuilding = 2
                 turned = True
                 closed = True
@@ -117,7 +114,13 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
                     bpy.ops.transform.translate(value=(0.0, 1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)        
                 elif side == 3:
                     bpy.ops.transform.translate(value=(1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
-             
+         
+        if turned == True:
+            generateModules.generateModuleWall(plane)
+        else:
+            generateModules.generateModuleWindow(plane, Vector((0.4, 0.9)), 0)
+                
+        bpy.data.objects[plane.name].select_set(True)    
         # Move to building position   
         if side == 0:
             bpy.ops.transform.translate(value=(advancement, colOut, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
@@ -159,18 +162,55 @@ def generateBuildingFloor(cFloor, colX, colY, size):
     
     return lastModName
 
+# Duplicate previous building floor                                                             
+def duplicateBuildingFloor(cFloor, floor, name):
+    # Select all module objects
+    collection = bpy.data.collections.get('Building')
+    bpy.ops.object.mode_set( mode = 'OBJECT')
+    
+    i = 0
+    for obj in collection.objects:
+        if(i >= cFloor - 1):
+            lastModName = obj.select_set(True)
+        i += 1
+    
+    bpy.ops.object.mode_set( mode = 'OBJECT')
+    
+    bpy.ops.object.join()
+    bpy.ops.object.editmode_toggle()
+    
+    # Go to edit mode, edge selection modes
+    bpy.ops.object.mode_set( mode = 'OBJECT')
+    
+    endFloor = 0
+    while endFloor < floor:
+        bpy.ops.object.duplicate_move()
+        bpy.ops.transform.translate(value=(0.0, 0.0, 2.0 * cFloor), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+    
+        endFloor += 1
+        
+    return bpy.context.active_object.name, endFloor
+
 # Generate the building
 def generateBuildingStructure(floor, colX, colY, size):
-   
     # Generate all building floors
     currFloor = 0
+    copy = False
+    lastModName = "None"
     while currFloor < floor:
         # Generate one floor
-        lastModName = generateBuildingFloor(currFloor, colX, colY, size)
+        if copy == False:
+            lastModName = generateBuildingFloor(currFloor, colX, colY, size)
+            copy = True
+        else:
+            lastModName, currFloor = duplicateBuildingFloor(currFloor, floor, lastModName)
+        
         currFloor += 1
+    
     
     # Select all module objects
     collection = bpy.data.collections.get('Building')
+    bpy.ops.object.mode_set( mode = 'OBJECT')
     
     for obj in collection.objects:
         obj.select_set(True)
@@ -190,15 +230,7 @@ def generateBuildingStructure(floor, colX, colY, size):
     bpy.ops.mesh.remove_doubles(threshold=0.02)
     
     bpy.ops.mesh.select_all( action = 'DESELECT')
-    bpy.ops.object.mode_set( mode = 'OBJECT')    
-
-
-def generateBuildingRandomly(floor, colX, colY, size):
-    currFloor = 0
-    while currFloor < floor:
-        # Generate one floor
-        lastModName = generateBuildingFloor(currFloor, colX, colY, size)
-        currFloor += 1     
+    bpy.ops.object.mode_set( mode = 'OBJECT') 
 
 # Remove floor operator    
 class RemoveBuilding(bpy.types.Operator):

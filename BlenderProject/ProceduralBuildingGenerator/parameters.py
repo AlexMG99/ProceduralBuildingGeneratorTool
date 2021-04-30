@@ -99,6 +99,14 @@ class BuildingParameters(PropertyGroup):
        min=0.0, max=1.0,
        description="Chose the secondary color of the facade"
        )
+       
+    buildingType : EnumProperty(
+        name="Building Type",
+        description="Choose building position",
+        items= [("Symmetrical", "Symmetrical", "Symmetrical building facade", "", 0),
+                ("Random", "Random", "Random building facade", "", 1),
+                ("Plane", "Plane", "Plane building facade", "", 2)],
+        default = "Plane")
 
 # Initialization
 def register():

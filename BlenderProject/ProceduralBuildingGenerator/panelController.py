@@ -62,6 +62,9 @@ class MainPanelPBG(bpy.types.Panel):
             row.prop(context.scene.buildingParameters, "rowX")
             row.prop(context.scene.buildingParameters, "rowY")
             
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "buildingType")
+            
             # Extra details
             box = layout.box()
             
