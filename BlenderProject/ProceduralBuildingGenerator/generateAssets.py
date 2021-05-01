@@ -48,9 +48,9 @@ def generateWindow(obj, windowSize, windowType):
     
     # Generate window
     utilities.selectFaceByIndex(obj, 17)
-    if windowType == 0:
+    if windowType == "Cross":
         generateOneWindow(obj)
-    elif windowType == 1:
+    elif windowType == "Horizontal":
         generateTwoWindows(obj, windowSize)
 
 

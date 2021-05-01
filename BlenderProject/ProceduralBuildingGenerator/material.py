@@ -66,7 +66,7 @@ def reloadMaterial(name):
     mat = bpy.data.materials.get(name)
     
     if name == "Frame":
-        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.buildingParameters.windowColor
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.windowColor
     
     return mat
     
@@ -77,7 +77,7 @@ def createMaterialBase(obj, texName):
     
     # Create material by name
     if texName == "Frame":
-        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.buildingParameters.windowColor
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.windowColor
     elif texName == "Glass":
         mat.node_tree.nodes["Principled BSDF"].inputs["Transmission"].default_value = 1
         mat.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0

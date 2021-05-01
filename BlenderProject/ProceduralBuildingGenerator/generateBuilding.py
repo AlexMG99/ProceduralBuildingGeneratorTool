@@ -121,12 +121,12 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
             if turned == True:
                 generateModules.generateModuleWall(plane)
             else:
-                generateModules.generateModuleWindow(plane, Vector((0.4, 0.9)), 0)    
+                generateModules.generateModuleWindow(plane, Vector((0.4, 0.9)), bpy.context.scene.buildingParameters.windowType)    
                 
          # ------------------------------------------------------------------------------------------------------------------------------------ #
         
         else:
-            generateModules.generateModuleWindow(plane, Vector((0.4, 0.9)), 0) 
+            generateModules.generateModuleWindow(plane, Vector((0.4, 0.9)), bpy.context.scene.buildingParameters.windowType) 
         
         # Set module correct transformation
         bpy.data.objects[plane.name].select_set(True)  
@@ -290,7 +290,7 @@ def removeBuilding(context, operator):
     
     # Update material colors
     mat = collection.objects[0].data.materials["Frame"]
-    bpy.context.scene.buildingParameters.windowColor = mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value
+    bpy.context.scene.textureParameters.windowColor = mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value
     
     for obj in collection.objects:
         bpy.data.objects.remove(obj, do_unlink=True)

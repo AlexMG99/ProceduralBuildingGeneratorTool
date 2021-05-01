@@ -47,9 +47,17 @@ class BuildingParameters(PropertyGroup):
         max = 20
         )
     
-    moduleSize : FloatVectorProperty(
-        name="Size",
-        description="Size of the window modules",
+    windowFrame : FloatProperty(
+        name="Frame width",
+        description="Number of modules in Y axis",
+        default = 0.2,
+        min = 0.05,
+        max = 0.3
+        )
+        
+    windowSize : FloatVectorProperty(
+        name="Window size",
+        description="Size of the window",
         subtype="XYZ",
         precision=2,
         size=3,
@@ -58,6 +66,34 @@ class BuildingParameters(PropertyGroup):
         max=10.0
         )
         
+    windowType : EnumProperty(
+        name="Window Type",
+        description="Choose window type",
+        items= [("Cross", "Cross", "", "", 0),
+                ("Vertical", "Horizontal", "", "", 1)],
+        default = "Cross")
+    
+    moduleSize : FloatVectorProperty(
+        name="Module size",
+        description="Size of the modules",
+        subtype="XYZ",
+        precision=2,
+        size=3,
+        default=(1.0,1.0,1.0),
+        min=0.0,
+        max=10.0
+        )
+       
+    buildingType : EnumProperty(
+        name="Building Type",
+        description="Choose building position",
+        items= [("Symmetrical", "Symmetrical", "Symmetrical building facade", "", 0),
+                ("Random", "Random", "Random building facade", "", 1),
+                ("Plane", "Plane", "Plane building facade", "", 2)],
+        default = "Plane")
+        
+        
+class TextureParameters(PropertyGroup):        
     twoColors : BoolProperty(
         name="Two colors",
         description="Building with two color configuration for the facade",
@@ -71,15 +107,25 @@ class BuildingParameters(PropertyGroup):
         )
     
     windowColor : FloatVectorProperty(  
-       name="Window Color",
+       name="Frame Color",
        subtype='COLOR',
        default=(0.0, 0.0, 0.0, 1.0),
        precision=2,
        size=4,
        min=0.0, max=1.0,
-       description="Chose color of windows"
+       description="Chose color of the window frame"
        )
-       
+    
+    glassColor : FloatVectorProperty(  
+       name="Glass Color",
+       subtype='COLOR',
+       default=(1.0, 1.0, 1.0, 1.0),
+       precision=2,
+       size=4,
+       min=0.0, max=1.0,
+       description="Chose color of the window glass"
+       )  
+            
     wallColor : FloatVectorProperty(  
        name="Wall Color",
        subtype='COLOR',
@@ -99,19 +145,13 @@ class BuildingParameters(PropertyGroup):
        min=0.0, max=1.0,
        description="Chose the secondary color of the facade"
        )
-       
-    buildingType : EnumProperty(
-        name="Building Type",
-        description="Choose building position",
-        items= [("Symmetrical", "Symmetrical", "Symmetrical building facade", "", 0),
-                ("Random", "Random", "Random building facade", "", 1),
-                ("Plane", "Plane", "Plane building facade", "", 2)],
-        default = "Plane")
 
 # Initialization
 def register():
     bpy.utils.register_class(BuildingParameters)
     bpy.utils.register_class(UtilitiesParameters)
+    bpy.utils.register_class(TextureParameters)
+    bpy.types.Scene.textureParameters = PointerProperty(name="Texture parameters", type=TextureParameters)
     bpy.types.Scene.buildingParameters = PointerProperty(name="Building parameters", type=BuildingParameters)
     bpy.types.Scene.utilitiesParameters = PointerProperty(name="Utilities parameters", type=UtilitiesParameters)
 
@@ -119,6 +159,8 @@ def register():
 def unregister():
     bpy.utils.unregister_class(BuildingParameters)
     bpy.utils.unregister_class(UtilitiesParameters)
+    bpy.utils.unregister_class(TextureParameters)
+    del bpy.types.Scene.textureParameters
     del bpy.types.Scene.buildingParameters
     del bpy.types.Scene.utilitiesParameters
 
