@@ -63,7 +63,20 @@ class WindowPanelPBG(BaseClassPBG, bpy.types.Panel):
         floorObj = bpy.data.collections.get("Building")
         
         if(floorObj):
-            print("There is floor Object")
+            # Window texture parameters
+            box = layout.box()
+            row = box.row()
+            row.label(text="Texture parameters", icon='BRUSH_DATA')
+            
+            # Window colors
+            row = box.row()
+            mat = floorObj.objects[0].data.materials["Frame"]
+            row.prop(mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"], "default_value", text="Frame color")
+            
+            row = box.row()
+            mat = floorObj.objects[0].data.materials["Glass"]
+            row.prop(mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"], "default_value", text="Glass color")
+        
         else:
             box = layout.box()
             row = box.row()
@@ -78,17 +91,17 @@ class WindowPanelPBG(BaseClassPBG, bpy.types.Panel):
             row = box.row()
             row.prop(context.scene.buildingParameters, "windowType", text="Type")
             
-        # Window texture parameters
-        box = layout.box()
-        row = box.row()
-        row.label(text="Texture parameters", icon='BRUSH_DATA')
-        
-        # Window colors
-        row = box.row()
-        row.prop(context.scene.textureParameters, "windowColor", text="Frame color")
-        
-        row = box.row()
-        row.prop(context.scene.textureParameters, "glassColor", text="Glass color")
+            # Window texture parameters
+            box = layout.box()
+            row = box.row()
+            row.label(text="Texture parameters", icon='BRUSH_DATA')
+            
+            # Window colors
+            row = box.row()
+            row.prop(context.scene.textureParameters, "windowColor", text="Frame color")
+            
+            row = box.row()
+            row.prop(context.scene.textureParameters, "glassColor", text="Glass color")
     
     
 class WallPanelPBG(BaseClassPBG, bpy.types.Panel):

@@ -149,7 +149,9 @@ class TextureParameters(PropertyGroup):
     wallTextures : EnumProperty(
         name="Wall textures",
         description="Choose wall texture",
-        items= [("Brick", "Brick", "Wall brick facade", "", 0)],
+        items= [("Brick", "Brick", "Wall brick facade", "", 0),
+                ("Stone", "Stone", "Wall stone facade", "", 1),
+                ("Wood", "Wood", "Wall wood facade", "", 2)],
         default = "Brick")
         
 
