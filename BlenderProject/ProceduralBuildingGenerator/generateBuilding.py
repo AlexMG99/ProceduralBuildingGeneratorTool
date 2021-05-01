@@ -51,6 +51,8 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
     opened = False
     closed = False
     
+    buildingParameters = bpy.context.scene.buildingParameters
+    
     while i < colX:
         turned = False;
         print(advancement)
@@ -121,12 +123,12 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
             if turned == True:
                 generateModules.generateModuleWall(plane)
             else:
-                generateModules.generateModuleWindow(plane, Vector((0.4, 0.9)), bpy.context.scene.buildingParameters.windowType)    
+                generateModules.generateModuleWindow(plane, Vector((buildingParameters.windowSize[0], buildingParameters.windowSize[1])), buildingParameters.windowType)    
                 
          # ------------------------------------------------------------------------------------------------------------------------------------ #
         
         else:
-            generateModules.generateModuleWindow(plane, Vector((0.4, 0.9)), bpy.context.scene.buildingParameters.windowType) 
+            generateModules.generateModuleWindow(plane, Vector((buildingParameters.windowSize[0], buildingParameters.windowSize[1])), buildingParameters.windowType) 
         
         # Set module correct transformation
         bpy.data.objects[plane.name].select_set(True)  

@@ -62,8 +62,8 @@ class BuildingParameters(PropertyGroup):
         precision=2,
         size=3,
         default=(1.0,1.0,1.0),
-        min=0.0,
-        max=10.0
+        min=0.5,
+        max=1.0
         )
         
     windowType : EnumProperty(

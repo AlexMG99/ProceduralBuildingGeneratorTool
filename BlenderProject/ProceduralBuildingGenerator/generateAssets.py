@@ -50,7 +50,7 @@ def generateWindow(obj, windowSize, windowType):
     utilities.selectFaceByIndex(obj, 17)
     if windowType == "Cross":
         generateOneWindow(obj)
-    elif windowType == "Horizontal":
+    elif windowType == "Vertical":
         generateTwoWindows(obj, windowSize)
 
 

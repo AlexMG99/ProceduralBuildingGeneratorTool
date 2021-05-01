@@ -52,7 +52,7 @@ def generateModuleWindow(obj, windowSize, windowType):
     utilities.selectFaceByIndex(obj, 6)
     
     # Inset window frame
-    bpy.ops.mesh.inset(thickness=0.2, depth=0)
+    bpy.ops.mesh.inset(thickness=bpy.context.scene.buildingParameters.windowFrame, depth=0)
     
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
                                                              "use_dissolve_ortho_edges":False, 
