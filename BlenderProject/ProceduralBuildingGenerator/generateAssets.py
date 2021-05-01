@@ -43,7 +43,7 @@ def generateWindow(obj, windowSize, windowType):
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
                                                              "use_dissolve_ortho_edges":False, 
                                                              "mirror":False}, 
-                                                             TRANSFORM_OT_translate={"value":(0, 0, 0.2)})
+                                                             TRANSFORM_OT_translate={"value":(0, 0, 0.25)})
     bpy.ops.mesh.select_all(action = 'DESELECT')                                                         
     
     # Generate window
@@ -105,8 +105,8 @@ def generateOneWindow(obj):
                 
     
 def generateTwoWindows(obj, windowSize):
-    bpy.ops.transform.resize(value=(1.05, 0.6, 1.1), orient_type ='GLOBAL')
-    bpy.ops.transform.translate(value=(0, -0.4 * windowSize + 0.05, 0.15), orient_type ='GLOBAL')
+    bpy.ops.transform.resize(value=(1.1, 0.6, 1.1), orient_type ='GLOBAL')
+    bpy.ops.transform.translate(value=(0, -0.4 * windowSize + 0.05, 0.25), orient_type ='GLOBAL')
     
     bpy.ops.mesh.inset(thickness=0.05, depth=0)
     
@@ -115,7 +115,7 @@ def generateTwoWindows(obj, windowSize):
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
                                                              "use_dissolve_ortho_edges":False, 
                                                              "mirror":False}, 
-                                                             TRANSFORM_OT_translate={"value":(0, 0, -0.05)})
+                                                             TRANSFORM_OT_translate={"value":(0, 0, -0.1)})
     
     # Set crystal material
     material.addMaterialBase(obj, "Glass")
@@ -124,8 +124,8 @@ def generateTwoWindows(obj, windowSize):
     bpy.ops.mesh.select_more()
     bpy.ops.mesh.select_more()
     
-    windowOpen = random.uniform(0.1 * windowSize, windowSize * 0.5)
-    bpy.ops.mesh.duplicate_move(MESH_OT_duplicate={"mode":1}, TRANSFORM_OT_translate={"value":(0, windowOpen, - 0.07), "orient_type":'GLOBAL'})
+    windowOpen = random.uniform(0.1 * windowSize, windowSize * 0.6)
+    bpy.ops.mesh.duplicate_move(MESH_OT_duplicate={"mode":1}, TRANSFORM_OT_translate={"value":(0, windowOpen, - 0.12), "orient_type":'GLOBAL'})
 
 # Create simple door    
 def generateDoor(obj):
@@ -137,13 +137,13 @@ def generateDoor(obj):
     utilities.selectFaceByIndex(obj, 6)
     
     # Set crystal material
-    material.addMaterialBase(obj, "Frame")
+    material.addMaterialBase(obj, "Frame Door")
     
     bpy.ops.mesh.duplicate()
     
     bpy.ops.transform.translate(value=(0, 0.0, 0.27), orient_type ='GLOBAL')
     
-    bpy.ops.mesh.inset(thickness=0.05, depth=0)
+    bpy.ops.mesh.inset(thickness=bpy.context.scene.buildingParameters.doorFrame, depth=0)
     
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
                                                              "use_dissolve_ortho_edges":False, 
@@ -172,7 +172,7 @@ def generateDoor(obj):
     # Glass material
     idx = [24,29]
     utilities.selectFacesByIndex(obj, idx)
-    material.addMaterialBase(obj, "Glass")
+    material.addMaterialBase(obj, "Glass Door")
     
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
                                                              "use_dissolve_ortho_edges":False, 

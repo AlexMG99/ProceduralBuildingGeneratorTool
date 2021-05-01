@@ -58,7 +58,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
         print(advancement)
         
         # Generate a new plane
-        bpy.ops.mesh.primitive_plane_add(scale=(size[0], size[1], size[2]))
+        bpy.ops.mesh.primitive_plane_add(scale=(size[0], size[1], 1.0))
     
         # Get created cube
         plane = bpy.context.selected_objects[0]
@@ -125,11 +125,60 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
             else:
                 generateModules.generateModuleWindow(plane, Vector((buildingParameters.windowSize[0], buildingParameters.windowSize[1])), buildingParameters.windowType)    
                 
-         # ------------------------------------------------------------------------------------------------------------------------------------ #
+        # Symmetrical facade Generation ------------------------------------------------------------------------------------------------------------------- #
+        elif bpy.context.scene.buildingParameters.buildingType == 'Symmetrical':
+            if opened == False and closed == False and int(i < colX * 0.5):
+                if turnBuilding == 0 and i != 0 and i != colX:
+                    turnBuilding = random.randint(0, 1)
+
+                # Module Outside
+                if turnBuilding == 1:
+                    advancement -= 1.0
+                    bpy.ops.transform.rotate(value=1.5708, orient_axis='Y', orient_type='LOCAL')
+                    turnBuilding = 2
+                    turned = True
+                    opened = True
+                    fromLast = i 
+                    print(str(side) + " + " + str(fromLast))
+                
+                    if side == 0:
+                        bpy.ops.transform.translate(value=(0.0, 1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+                    elif side == 1:
+                        bpy.ops.transform.translate(value=(1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)        
+                    elif side == 2:
+                        bpy.ops.transform.translate(value=(0.0, -1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)        
+                    elif side == 3:
+                        bpy.ops.transform.translate(value=(-1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)         
+
+            # Module inside
+            if opened == True and closed == False and (colX - fromLast) == i:         
+                advancement -= 1.0
+                print(str(colX - fromLast))
+                bpy.ops.transform.rotate(value=-1.5708, orient_axis='Y', orient_type='LOCAL')
+                turnBuilding = 2
+                turned = True
+                closed = True
+                
+                if side == 0:
+                    bpy.ops.transform.translate(value=(0.0, -1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+                elif side == 1:
+                    bpy.ops.transform.translate(value=(-1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)        
+                elif side == 2:
+                    bpy.ops.transform.translate(value=(0.0, 1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)        
+                elif side == 3:
+                    bpy.ops.transform.translate(value=(1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
         
+            if turned == True:
+                generateModules.generateModuleWall(plane)
+            else:
+                generateModules.generateModuleWindow(plane, Vector((buildingParameters.windowSize[0], buildingParameters.windowSize[1])), buildingParameters.windowType)
+        
+        # -------------------------------------------------------------------------------------------------------------------------------------------------- #
         else:
+            # generateModules.generateModuleDoor(plane, buildingParameters.doorSize[0], buildingParameters.doorSize[1])
             generateModules.generateModuleWindow(plane, Vector((buildingParameters.windowSize[0], buildingParameters.windowSize[1])), buildingParameters.windowType) 
         
+        # generateModules.generateModuleWindow(plane, buildingParameters.doorSize[0], buildingParameters.doorSize[1])
         # Set module correct transformation
         bpy.data.objects[plane.name].select_set(True)  
           
@@ -157,7 +206,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
             advancement += 2.0
             i += 1
         
-        if opened == True:
+        if opened == True and bpy.context.scene.buildingParameters.buildingType == 'Random':
             fromLast += 1
         
         
@@ -181,8 +230,8 @@ def generateBuildingRoof(floor, colX, colY, size):
     
     # Generate a new plane
     bpy.ops.mesh.primitive_plane_add()
-    bpy.ops.transform.resize(value=(colX * size[1], colY * size[0], size[2]))
-    bpy.ops.transform.translate(value=(colX * size[0] - 1, -colY * size[1], 2.0 * floor - size[2]), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+    bpy.ops.transform.resize(value=(colX * size[1], colY * size[0], 1.0))
+    bpy.ops.transform.translate(value=(colX * size[0] - 1, -colY * size[0], 2.0 * floor - size[1]), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
     
     plane = bpy.context.selected_objects[0]
     bpy.ops.object.editmode_toggle()

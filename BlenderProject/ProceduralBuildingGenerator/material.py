@@ -71,7 +71,10 @@ def reloadMaterial(name):
         mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.glassColor
     elif name == "Wall 1":
         mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.wallColor
-        
+    elif name == "Frame Door":
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.doorColor
+    elif name == "Glass Door":
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.doorGlassColor    
     return mat
     
 def createMaterialBase(obj, texName):
@@ -92,7 +95,11 @@ def createMaterialBase(obj, texName):
     elif texName == "Bottom":
         mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (1, 1, 1, 1)
     elif texName == "Wall 1":
-        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.wallColor    
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.wallColor 
+    elif texName == "Frame Door":
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.doorColor
+    elif texName == "Glass Door":
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.doorGlassColor   
     return mat
     
 def createMaterial(obj, texName):

@@ -57,7 +57,7 @@ def generateModuleWindow(obj, windowSize, windowType):
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
                                                              "use_dissolve_ortho_edges":False, 
                                                              "mirror":False}, 
-                                                             TRANSFORM_OT_translate={"value":(0, 0, -0.2)})
+                                                             TRANSFORM_OT_translate={"value":(0, 0, -0.25)})
     
     # Generate UVS and add material to object
     bpy.ops.mesh.select_all(action = 'DESELECT') #Deselecting all
@@ -130,7 +130,12 @@ def generateModuleDoor(obj, doorWidth, doorHeight):
     bpy.ops.mesh.select_all(action = 'DESELECT') #Deselecting all
     idx = [1,8,9,15]
     material.generateUVS(obj, idx)
-    material.addMaterial(obj, "Wall")
+    
+    # Select wall texture or color
+    if(bpy.context.scene.textureParameters.wallTexture == True):
+        material.addMaterial(obj, bpy.context.scene.textureParameters.wallTextures)
+    else:
+        material.addMaterialBase(obj, "Wall 1")
     
     # ------------------------------------------------------------------------------------------------------ #
                                                          
@@ -160,12 +165,12 @@ def generateRoofModule(obj):
     material.addMaterial(obj, "Roof")
     
     # Inset window frame
-    bpy.ops.mesh.inset(thickness=0.06, depth=0)
+    bpy.ops.mesh.inset(thickness=0.05, depth=0)
 
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
                                                              "use_dissolve_ortho_edges":False, 
                                                              "mirror":False}, 
-                                                             TRANSFORM_OT_translate={"value":(0, 0, -0.5)})
+                                                             TRANSFORM_OT_translate={"value":(0, 0, -0.2)})
     
     idx = [0,1,2,3,16,17,18,19]
     material.generateUVS(obj, idx)

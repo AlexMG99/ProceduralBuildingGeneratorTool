@@ -36,7 +36,7 @@ class MainPanelPBG(BaseClassPBG, bpy.types.Panel):
         
         # Check if floor is created
         row = box.row()
-        row.label(text="Building parameters", icon='OBJECT_ORIGIN')
+        row.label(text="Structure parameters", icon='OBJECT_ORIGIN')
         
         row = box.row()
         row.prop(context.scene.buildingParameters, "moduleSize")
@@ -46,8 +46,17 @@ class MainPanelPBG(BaseClassPBG, bpy.types.Panel):
         row.prop(context.scene.buildingParameters, "rowX")
         row.prop(context.scene.buildingParameters, "rowY")
         
+        box = layout.box()
+        row = box.row()
+        row.label(text="Facade parameters", icon='SNAP_FACE')
+        row = box.row()
+        row.prop(context.scene.buildingParameters, "randomnessBuilding", text="Randomness")
+        
         row = box.row()
         row.prop(context.scene.buildingParameters, "buildingType")
+        
+        row = box.row()
+        row.prop(context.scene.buildingParameters, "buildingStreet")
         
 
 class WindowPanelPBG(BaseClassPBG, bpy.types.Panel):
@@ -131,8 +140,57 @@ class WallPanelPBG(BaseClassPBG, bpy.types.Panel):
         else:
             row = box.row()
             row.prop(context.scene.textureParameters, "wallTextures")
-            
+          
         
+class DoorPanelPBG(BaseClassPBG, bpy.types.Panel):
+    bl_label = "Door parameters"
+    bl_idname = "NODE_PT_DOORPANELPBG"
+    bl_parent_id = "NODE_PT_MAINPANELPBG"
+    
+    def draw(self, context):
+        layout = self.layout
+        
+        # Door building parameters
+        floorObj = bpy.data.collections.get("Building")
+        
+        if(floorObj):
+            # Door texture parameters
+            box = layout.box()
+            row = box.row()
+            row.label(text="Texture parameters", icon='BRUSH_DATA')
+            
+            # Window colors
+            row = box.row()
+            mat = floorObj.objects[0].data.materials["Frame Door"]
+            row.prop(mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"], "default_value", text="Frame color")
+            
+            row = box.row()
+            mat = floorObj.objects[0].data.materials["Glass Door"]
+            row.prop(mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"], "default_value", text="Glass color")
+        
+        else:
+            box = layout.box()
+            row = box.row()
+            row.label(text="Construction parameters", icon='OBJECT_ORIGIN')
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "doorSize")
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "doorFrame")
+            
+            # Window texture parameters
+            box = layout.box()
+            row = box.row()
+            row.label(text="Texture parameters", icon='BRUSH_DATA')
+            
+            # Window colors
+            row = box.row()
+            row.prop(context.scene.textureParameters, "windowColor", text="Frame color")
+            
+            row = box.row()
+            row.prop(context.scene.textureParameters, "glassColor", text="Glass color") 
+
 class ToolPanelPBG(BaseClassPBG, bpy.types.Panel):
     bl_label = "Tool debug"
     bl_idname = "NODE_PT_TOOLPANELPBG"
@@ -173,7 +231,7 @@ class ButtonPBG(BaseClassPBG, bpy.types.Panel):
 
 
 # Register classes
-classes = (MainPanelPBG, WindowPanelPBG, WallPanelPBG, ToolPanelPBG, ButtonPBG)
+classes = (MainPanelPBG, WindowPanelPBG, DoorPanelPBG, WallPanelPBG, ToolPanelPBG, ButtonPBG)
 
 def register():
     for cls in classes:

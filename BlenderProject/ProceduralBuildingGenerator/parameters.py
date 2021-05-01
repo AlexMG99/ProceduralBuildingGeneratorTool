@@ -46,13 +46,40 @@ class BuildingParameters(PropertyGroup):
         min = 0,
         max = 20
         )
+        
+    randomnessBuilding : IntProperty(
+        name="Randomness:",
+        description="The higher the randomness, the higher differences between floors",
+        default = 1,
+        min = 0,
+        max = 5
+        )
+    
+    doorFrame : FloatProperty(
+        name="Door width",
+        description="Width of the window frame",
+        default = 0.15,
+        min = 0.01,
+        max = 0.15
+        )
+    
+    doorSize : FloatVectorProperty(
+        name="Door size",
+        description="Size of the door",
+        subtype="XYZ",
+        precision=2,
+        size=2,
+        default=(1.0,1.0),
+        min=0.45,
+        max=0.75
+        )
     
     windowFrame : FloatProperty(
         name="Frame width",
         description="Width of the window frame",
-        default = 0.2,
-        min = 0.01,
-        max = 0.15
+        default = 0.15,
+        min = 0.05,
+        max = 0.10
         )
         
     windowSize : FloatVectorProperty(
@@ -60,8 +87,8 @@ class BuildingParameters(PropertyGroup):
         description="Size of the window",
         subtype="XYZ",
         precision=2,
-        size=3,
-        default=(1.0,1.0,1.0),
+        size=2,
+        default=(1.0,1.0),
         min=0.5,
         max=1.0
         )
@@ -78,8 +105,8 @@ class BuildingParameters(PropertyGroup):
         description="Size of the modules",
         subtype="XYZ",
         precision=2,
-        size=3,
-        default=(1.0,1.0,1.0),
+        size=2,
+        default=(1.0,1.0),
         min=0.0,
         max=10.0
         )
@@ -91,7 +118,14 @@ class BuildingParameters(PropertyGroup):
                 ("Random", "Random", "Random building facade", "", 1),
                 ("Flat", "Flat", "Plane building facade", "", 2)],
         default = "Flat")
-        
+    
+    buildingStreet : EnumProperty(
+        name="Building Street",
+        description="Choose the position of the building in the street",
+        items= [("Corner", "Corner", "", "", 0),
+                ("Middle", "Middle", "", "", 1),
+                ("Solo", "Solo", "", "", 2)],
+        default = "Solo")
         
 class TextureParameters(PropertyGroup):        
     twoColors : BoolProperty(
@@ -144,6 +178,26 @@ class TextureParameters(PropertyGroup):
        size=3,
        min=0.0, max=1.0,
        description="Chose the secondary color of the facade"
+       )
+    
+    doorColor : FloatVectorProperty(  
+       name="Door Color",
+       subtype='COLOR',
+       default=[0.0, 0.0, 0.0, 1.0],
+       precision=2,
+       size=4,
+       min=0.0, max=1.0,
+       description="Chose color of the door frame"
+       )
+    
+    doorGlassColor : FloatVectorProperty(  
+       name="Door Color",
+       subtype='COLOR',
+       default=[1.0, 1.0, 1.0, 1.0],
+       precision=2,
+       size=4,
+       min=0.0, max=1.0,
+       description="Chose color of the door glass"
        )
        
     wallTextures : EnumProperty(
