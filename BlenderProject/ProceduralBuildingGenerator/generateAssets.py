@@ -26,7 +26,7 @@ def generateWindow(obj, windowSize, windowType):
     material.addMaterialBase(obj, "Frame")
     
     # Generate window frame
-    bpy.ops.mesh.inset(thickness=0.05, depth=0)
+    bpy.ops.mesh.inset(thickness=bpy.context.scene.buildingParameters.windowFrame, depth=0)
     bpy.ops.mesh.inset(thickness=0.02, depth=0)
     
     bpy.ops.mesh.select_more()

@@ -49,10 +49,10 @@ class BuildingParameters(PropertyGroup):
     
     windowFrame : FloatProperty(
         name="Frame width",
-        description="Number of modules in Y axis",
+        description="Width of the window frame",
         default = 0.2,
-        min = 0.05,
-        max = 0.3
+        min = 0.01,
+        max = 0.15
         )
         
     windowSize : FloatVectorProperty(
@@ -70,7 +70,7 @@ class BuildingParameters(PropertyGroup):
         name="Window Type",
         description="Choose window type",
         items= [("Cross", "Cross", "", "", 0),
-                ("Vertical", "Horizontal", "", "", 1)],
+                ("Vertical", "Vertical", "", "", 1)],
         default = "Cross")
     
     moduleSize : FloatVectorProperty(
@@ -89,8 +89,8 @@ class BuildingParameters(PropertyGroup):
         description="Choose building position",
         items= [("Symmetrical", "Symmetrical", "Symmetrical building facade", "", 0),
                 ("Random", "Random", "Random building facade", "", 1),
-                ("Plane", "Plane", "Plane building facade", "", 2)],
-        default = "Plane")
+                ("Flat", "Flat", "Plane building facade", "", 2)],
+        default = "Flat")
         
         
 class TextureParameters(PropertyGroup):        
@@ -145,6 +145,13 @@ class TextureParameters(PropertyGroup):
        min=0.0, max=1.0,
        description="Chose the secondary color of the facade"
        )
+       
+    wallTextures : EnumProperty(
+        name="Wall textures",
+        description="Choose wall texture",
+        items= [("Brick", "Brick", "Wall brick facade", "", 0)],
+        default = "Brick")
+        
 
 # Initialization
 def register():

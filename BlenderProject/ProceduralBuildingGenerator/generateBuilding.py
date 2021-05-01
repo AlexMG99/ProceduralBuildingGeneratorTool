@@ -294,6 +294,14 @@ def removeBuilding(context, operator):
     mat = collection.objects[0].data.materials["Frame"]
     bpy.context.scene.textureParameters.windowColor = mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value
     
+    mat = collection.objects[0].data.materials["Glass"]
+    bpy.context.scene.textureParameters.glassColor = mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value
+    
+    """mat = collection.objects[0].data.materials["Wall 1"]
+    if(mat.name == "Wall 1"):
+        bpy.context.scene.textureParameters.wallColor = mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value
+    """
+    
     for obj in collection.objects:
         bpy.data.objects.remove(obj, do_unlink=True)
     

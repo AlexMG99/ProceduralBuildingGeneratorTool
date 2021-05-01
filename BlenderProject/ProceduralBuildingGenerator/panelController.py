@@ -57,30 +57,31 @@ class WindowPanelPBG(BaseClassPBG, bpy.types.Panel):
     
     def draw(self, context):
         layout = self.layout
-        box = layout.box()
+    
         
         # Window building parameters
         floorObj = bpy.data.collections.get("Building")
-          
-        row = box.row()
-        row.label(text="Window parameters", icon='OBJECT_ORIGIN')
         
-        row = box.row()
-        row.prop(context.scene.buildingParameters, "windowSize")
-        
-        row = box.row()
-        row.prop(context.scene.buildingParameters, "windowFrame")
-        
-        row = box.row()
-        row.prop(context.scene.buildingParameters, "windowType")
-        
+        if(floorObj):
+            print("There is floor Object")
+        else:
+            box = layout.box()
+            row = box.row()
+            row.label(text="Construction parameters", icon='OBJECT_ORIGIN')
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "windowSize")
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "windowFrame")
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "windowType", text="Type")
+            
         # Window texture parameters
+        box = layout.box()
         row = box.row()
         row.label(text="Texture parameters", icon='BRUSH_DATA')
-        
-        row = box.row()
-        row.prop(context.scene.textureParameters, "twoColors")
-        row.prop(context.scene.textureParameters, "wallTexture")
         
         # Window colors
         row = box.row()
@@ -88,6 +89,36 @@ class WindowPanelPBG(BaseClassPBG, bpy.types.Panel):
         
         row = box.row()
         row.prop(context.scene.textureParameters, "glassColor", text="Glass color")
+    
+    
+class WallPanelPBG(BaseClassPBG, bpy.types.Panel):
+    bl_label = "Wall parameters"
+    bl_idname = "NODE_PT_WALLPANELPBG"
+    bl_parent_id = "NODE_PT_MAINPANELPBG"
+    
+    def draw(self, context):
+        layout = self.layout
+        box = layout.box()
+        
+        # Wall texture parameters
+        row = box.row()
+        row.label(text="Texture parameters", icon='BRUSH_DATA')
+        
+        row = box.row()
+        row.prop(context.scene.textureParameters, "twoColors")
+        row.prop(context.scene.textureParameters, "wallTexture")
+        
+        # Wall colors
+        if(context.scene.textureParameters.wallTexture == False):
+            row = box.row()
+            row.prop(context.scene.textureParameters, "wallColor", text="Wall color")
+            if(context.scene.textureParameters.twoColors == True):
+                row = box.row()
+                row.prop(context.scene.textureParameters, "wallColorAux", text="Wall color 2")
+        else:
+            row = box.row()
+            row.prop(context.scene.textureParameters, "wallTextures")
+            
         
 class ToolPanelPBG(BaseClassPBG, bpy.types.Panel):
     bl_label = "Tool debug"
@@ -106,12 +137,13 @@ class ToolPanelPBG(BaseClassPBG, bpy.types.Panel):
         row.prop(context.scene.utilitiesParameters, "edgeIdx", text="Index")
         row.prop(context.scene.utilitiesParameters, "objName")
         row = box.row()
-        row.operator(SelectEdge.bl_idname, text="Select Object Edge",)
+        row.operator(SelectEdge.bl_idname, text="Select Object Edge")
         row.operator(SelectFace.bl_idname, text="Select Object Face")
         
 class ButtonPBG(BaseClassPBG, bpy.types.Panel):
     bl_label = "Button action"
-    bl_idname = "NODE_PT_TOOLPANELPBG"
+    bl_idname = "NODE_PT_BUTTONPANELPBG"
+    bl_parent_id = "NODE_PT_MAINPANELPBG"
     bl_options = {'HIDE_HEADER'}
     
     def draw(self, context):
@@ -128,7 +160,7 @@ class ButtonPBG(BaseClassPBG, bpy.types.Panel):
 
 
 # Register classes
-classes = (MainPanelPBG, WindowPanelPBG, ToolPanelPBG, ButtonPBG)
+classes = (MainPanelPBG, WindowPanelPBG, WallPanelPBG, ToolPanelPBG, ButtonPBG)
 
 def register():
     for cls in classes:

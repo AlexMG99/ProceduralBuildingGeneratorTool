@@ -67,7 +67,11 @@ def reloadMaterial(name):
     
     if name == "Frame":
         mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.windowColor
-    
+    elif name == "Glass":
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.glassColor
+    elif name == "Wall 1":
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.wallColor
+        
     return mat
     
 def createMaterialBase(obj, texName):
@@ -87,7 +91,8 @@ def createMaterialBase(obj, texName):
         mat.refraction_depth = 0.001
     elif texName == "Bottom":
         mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (1, 1, 1, 1)
-        
+    elif texName == "Wall 1":
+        mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = bpy.context.scene.textureParameters.wallColor    
     return mat
     
 def createMaterial(obj, texName):
@@ -102,6 +107,7 @@ def createMaterial(obj, texName):
     
     # Load Images
     imgDiffuse = bpy.data.images.load(texturePath + texName + "_Diffuse.tif")
+    print(texturePath + texName + "_Diffuse")
     imgNormal = bpy.data.images.load(texturePath + texName + "_Normal.tif")
     imgAO = bpy.data.images.load(texturePath + texName + "_AO.tif")
     imgRoughness = bpy.data.images.load(texturePath + texName + "_Roughness.tif")
