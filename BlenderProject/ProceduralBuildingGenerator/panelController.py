@@ -36,14 +36,14 @@ class MainPanelPBG(bpy.types.Panel):
         floorObj = bpy.data.collections.get("Building")
         if(floorObj):
             
-            mat = floorObj.objects[0].data.materials["Frame"]
+            # mat = floorObj.objects[0].data.materials["Frame"]
 
             # Extra details¡¡
             row = box.row()
             row.label(text="Texture parameters", icon='BRUSH_DATA')
             
             row = box.row()
-            row.prop(mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"], "default_value", text="Window color")
+            #row.prop(mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"], "default_value", text="Window color")
             
             # floorObj.objects[0].data.material[1] = mat
             

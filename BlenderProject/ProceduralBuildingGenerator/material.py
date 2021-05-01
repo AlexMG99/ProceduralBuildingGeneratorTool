@@ -25,6 +25,8 @@ def generateUVS(obj, idx):
     
     # Mark Edge Seam and smart UV
     bpy.ops.mesh.mark_seam(clear=False)
+    
+    bpy.ops.mesh.select_all( action = 'SELECT')
     bpy.ops.uv.smart_project()
 
     # Show the updates in the viewports

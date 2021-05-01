@@ -54,7 +54,8 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
     while i < colX:
         turned = False;
         print(advancement)
-        # Generate a new cube
+        
+        # Generate a new plane
         bpy.ops.mesh.primitive_plane_add(scale=(size[0], size[1], size[2]))
     
         # Get created cube
@@ -73,54 +74,63 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
             generateModules.generateModuleDoor(plane, 0.5, 0.75)
         else:"""
         
+        # Random facade Generation ----------------------------------------------------------------------------------------------------- #
         # Building one module out
-        if opened == False and closed == False:
-            if turnBuilding == 0 and i != 0 and i != colX:
-                turnBuilding = random.randint(0, 1)
-        
-            # Module Outside
-            if turnBuilding == 1:
-                advancement -= 1.0
-                bpy.ops.transform.rotate(value=1.5708, orient_axis='Y', orient_type='LOCAL')
-                turnBuilding = 2
-                turned = True
-                opened = True
-            
-                if side == 0:
-                    bpy.ops.transform.translate(value=(0.0, 1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
-                elif side == 1:
-                    bpy.ops.transform.translate(value=(1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)        
-                elif side == 2:
-                    bpy.ops.transform.translate(value=(0.0, -1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)        
-                elif side == 3:
-                    bpy.ops.transform.translate(value=(-1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)         
-        
-        # Module inside
-        if opened == True and closed == False and fromLast > 1:        
-            turnBuilding = random.randint(0, 3)
-            
-            if turnBuilding == 1 or i == colX - 1:    
-                advancement -= 1.0
-                bpy.ops.transform.rotate(value=-1.5708, orient_axis='Y', orient_type='LOCAL')
-                turnBuilding = 2
-                turned = True
-                closed = True
+        if bpy.context.scene.buildingParameters.buildingType == 'Random':
+            if opened == False and closed == False:
+                if turnBuilding == 0 and i != 0 and i != colX:
+                    turnBuilding = random.randint(0, 1)
+
+                # Module Outside
+                if turnBuilding == 1:
+                    advancement -= 1.0
+                    bpy.ops.transform.rotate(value=1.5708, orient_axis='Y', orient_type='LOCAL')
+                    turnBuilding = 2
+                    turned = True
+                    opened = True
                 
-                if side == 0:
-                    bpy.ops.transform.translate(value=(0.0, -1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
-                elif side == 1:
-                    bpy.ops.transform.translate(value=(-1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)        
-                elif side == 2:
-                    bpy.ops.transform.translate(value=(0.0, 1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)        
-                elif side == 3:
-                    bpy.ops.transform.translate(value=(1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
-         
-        if turned == True:
-            generateModules.generateModuleWall(plane)
+                    if side == 0:
+                        bpy.ops.transform.translate(value=(0.0, 1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+                    elif side == 1:
+                        bpy.ops.transform.translate(value=(1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)        
+                    elif side == 2:
+                        bpy.ops.transform.translate(value=(0.0, -1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)        
+                    elif side == 3:
+                        bpy.ops.transform.translate(value=(-1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)         
+
+            # Module inside
+            if opened == True and closed == False and fromLast > 1:        
+                turnBuilding = random.randint(0, 3)
+                
+                if turnBuilding == 1 or i == colX - 1:    
+                    advancement -= 1.0
+                    bpy.ops.transform.rotate(value=-1.5708, orient_axis='Y', orient_type='LOCAL')
+                    turnBuilding = 2
+                    turned = True
+                    closed = True
+                    
+                    if side == 0:
+                        bpy.ops.transform.translate(value=(0.0, -1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+                    elif side == 1:
+                        bpy.ops.transform.translate(value=(-1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)        
+                    elif side == 2:
+                        bpy.ops.transform.translate(value=(0.0, 1.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)        
+                    elif side == 3:
+                        bpy.ops.transform.translate(value=(1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+             
+            if turned == True:
+                generateModules.generateModuleWall(plane)
+            else:
+                generateModules.generateModuleWindow(plane, Vector((0.4, 0.9)), 0)    
+                
+         # ------------------------------------------------------------------------------------------------------------------------------------ #
+        
         else:
-            generateModules.generateModuleWindow(plane, Vector((0.4, 0.9)), 0)
-                
-        bpy.data.objects[plane.name].select_set(True)    
+            generateModules.generateModuleWindow(plane, Vector((0.4, 0.9)), 0) 
+        
+        # Set module correct transformation
+        bpy.data.objects[plane.name].select_set(True)  
+          
         # Move to building position   
         if side == 0:
             bpy.ops.transform.translate(value=(advancement, colOut, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
@@ -134,6 +144,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
         bpy.ops.transform.rotate(value=-1.5708 * side, orient_axis='Z', orient_type='GLOBAL')
         bpy.ops.transform.translate(value=(0.0, 0.0, 2.0 * cFloor), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
         
+        # Check next module position
         if turned == True:
             advancement += 1.0
             if opened == True and closed == False:
@@ -150,6 +161,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size):
         
     return plane.name
 
+
 # Generate a building floor with 4 sides                                                             
 def generateBuildingFloor(cFloor, colX, colY, size):
     side = 0
@@ -161,6 +173,21 @@ def generateBuildingFloor(cFloor, colX, colY, size):
         side += 1
     
     return lastModName
+
+# Generate a roof for the building                                                         
+def generateBuildingRoof(floor, colX, colY, size):
+    
+    # Generate a new plane
+    bpy.ops.mesh.primitive_plane_add()
+    bpy.ops.transform.resize(value=(colX * size[1], colY * size[0], size[2]))
+    bpy.ops.transform.translate(value=(colX * size[0] - 1, -colY * size[1], 2.0 * floor - size[2]), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+    
+    plane = bpy.context.selected_objects[0]
+    bpy.ops.object.editmode_toggle()
+    
+    generateModules.generateRoofModule(plane)
+    
+    return plane.name
 
 # Duplicate previous building floor                                                             
 def duplicateBuildingFloor(cFloor, floor, name):
@@ -183,7 +210,7 @@ def duplicateBuildingFloor(cFloor, floor, name):
     bpy.ops.object.mode_set( mode = 'OBJECT')
     
     endFloor = 0
-    while endFloor < floor:
+    while endFloor < floor - 1:
         bpy.ops.object.duplicate_move()
         bpy.ops.transform.translate(value=(0.0, 0.0, 2.0 * cFloor), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
     
@@ -193,6 +220,7 @@ def duplicateBuildingFloor(cFloor, floor, name):
 
 # Generate the building
 def generateBuildingStructure(floor, colX, colY, size):
+    
     # Generate all building floors
     currFloor = 0
     copy = False
@@ -207,6 +235,16 @@ def generateBuildingStructure(floor, colX, colY, size):
         
         currFloor += 1
     
+    
+    # Generate building roof
+    bpy.ops.object.select_all(action='DESELECT')
+        
+    bpy.ops.object.mode_set( mode = 'EDIT')
+    bpy.ops.mesh.select_mode( type = 'EDGE')
+    bpy.ops.mesh.select_all( action = 'DESELECT')
+    bpy.ops.object.mode_set( mode = 'OBJECT')
+
+    lastModName = generateBuildingRoof(floor, colX, colY, size)
     
     # Select all module objects
     collection = bpy.data.collections.get('Building')
@@ -227,7 +265,7 @@ def generateBuildingStructure(floor, colX, colY, size):
     bpy.ops.mesh.select_mode( type = 'EDGE')
     bpy.ops.mesh.select_all( action = 'SELECT')
     
-    bpy.ops.mesh.remove_doubles(threshold=0.02)
+    bpy.ops.mesh.remove_doubles(threshold=0.01)
     
     bpy.ops.mesh.select_all( action = 'DESELECT')
     bpy.ops.object.mode_set( mode = 'OBJECT') 
