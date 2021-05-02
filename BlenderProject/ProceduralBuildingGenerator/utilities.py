@@ -132,15 +132,41 @@ def selectEdgeByIdx(name, idx):
     bmesh.update_edit_mesh(me, True)
 
 
+# Select object edge by index operator
+class ResizeObject(bpy.types.Operator):
+    bl_label = "Resize Object"
+    bl_idname = "pbg.resizeobject"
+    
+    def execute(self, context):
+        obj = bpy.data.collections.get("Building").objects[0]
+    
+        resizeObject(obj, bpy.context.scene.buildingParameters.buildingScale)
+        
+        return{'FINISHED'}
+
+
+# Select object face by index
+def resizeObject(obj, scale):
+    
+    # Go to edit mode, edge selection modes
+    bpy.ops.object.mode_set( mode = 'EDIT')
+    bpy.ops.mesh.select_all(action = 'SELECT') 
+    
+    bpy.ops.transform.scale = scale
+
+    bpy.ops.object.mode_set( mode = 'OBJECT')
+
 # Class Inizialization
 def register():
     bpy.utils.register_class(SelectEdge)
     bpy.utils.register_class(SelectFace)
+    bpy.utils.register_class(ResizeObject)
 
 
 def unregister():
     bpy.utils.unregister_class(SelectEdge)
     bpy.utils.unregister_class(SelectFace)
+    bpy.utils.unregister_class(ResizeObject)
 
 
 if __name__ == "__main__":

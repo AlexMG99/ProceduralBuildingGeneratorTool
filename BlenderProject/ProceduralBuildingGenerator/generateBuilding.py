@@ -60,7 +60,7 @@ def generateBuildingStructure(floor, colX, colY, size):
             lastModName = generateFloor.generateBuildingFloor(currFloor, colX, colY, size, buildingPlant)
             copy = True
         else:
-            lastModName = generateFloor.generateBuildingFloorFromPrevious(currFloor, colX, colY, size, buildingPlant)
+            lastModName = generateFloor.generateBuildingFloorFromPrevious(currFloor, colX, colY, size, buildingPlant, floor)
             #lastModName, currFloor = generateFloor.duplicateBuildingFloor(currFloor, floor, lastModName)
         
         currFloor += 1

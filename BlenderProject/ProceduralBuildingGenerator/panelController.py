@@ -28,35 +28,48 @@ class BaseClassPBG:
     bl_category = 'PBG'
 
 class MainPanelPBG(BaseClassPBG, bpy.types.Panel):
-
+    def execute():
+        bpy.ops.object.mode_set( mode = 'EDIT')
+        bpy.ops.transform.resize(value=(buildingScale[0], buildingScale[1], buildingScale[2]))
+    
     def draw(self, context):
         layout = self.layout
         
         box = layout.box()
         
         # Check if floor is created
-        row = box.row()
-        row.label(text="Structure parameters", icon='OBJECT_ORIGIN')
+        floorObj = bpy.data.collections.get("Building")
         
-        row = box.row()
-        row.prop(context.scene.buildingParameters, "moduleSize")
-        
-        row = box.row()
-        row.prop(context.scene.buildingParameters, "numFloor")
-        row.prop(context.scene.buildingParameters, "rowX")
-        row.prop(context.scene.buildingParameters, "rowY")
-        
-        box = layout.box()
-        row = box.row()
-        row.label(text="Facade parameters", icon='SNAP_FACE')
-        row = box.row()
-        row.prop(context.scene.buildingParameters, "randomnessBuilding", text="Randomness")
-        
-        row = box.row()
-        row.prop(context.scene.buildingParameters, "buildingType")
-        
-        row = box.row()
-        row.prop(context.scene.buildingParameters, "buildingStreet")
+        if(floorObj):
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "buildingScale")
+            
+            row = box.row()
+            row.operator(ResizeObject.bl_idname, text="Resize building", icon='CON_SIZELIKE')
+
+        else:
+            row = box.row()
+            row.label(text="Structure parameters", icon='OBJECT_ORIGIN')
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "moduleSize")
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "numFloor")
+            row.prop(context.scene.buildingParameters, "rowX")
+            row.prop(context.scene.buildingParameters, "rowY")
+            
+            box = layout.box()
+            row = box.row()
+            row.label(text="Facade parameters", icon='SNAP_FACE')
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "randomnessBuilding", text="Randomness")
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "buildingType")
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "buildingStreet")
         
 
 class WindowPanelPBG(BaseClassPBG, bpy.types.Panel):

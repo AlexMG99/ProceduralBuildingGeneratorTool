@@ -55,22 +55,22 @@ def generateBuildingFloor(cFloor, colX, colY, size, buildingPlant):
     return lastModName, buildingPlant
 
 # Generate a building floor with 4 sides from the previous structure
-def generateBuildingFloorFromPrevious(cFloor, colX, colY, size, buildingPlant):
+def generateBuildingFloorFromPrevious(cFloor, colX, colY, size, buildingPlant, floor):
     side = 0
     buildingStreet = bpy.context.scene.buildingParameters.buildingStreet
     
     if buildingStreet == "Solo":
         while side < 4:
             if side % 2 == 0:
-                lastModName, buildingPlant = generateFacade.generateBuildingFacadeFromPrevious(side, colX, colY, cFloor, size, buildingPlant)
+                lastModName, buildingPlant = generateFacade.generateBuildingFacadeFromPrevious(side, colX, colY, cFloor, size, buildingPlant, floor)
             else:
-                lastModName, buildingPlant = generateFacade.generateBuildingFacadeFromPrevious(side, colY, colX, cFloor, size, buildingPlant)
+                lastModName, buildingPlant = generateFacade.generateBuildingFacadeFromPrevious(side, colY, colX, cFloor, size, buildingPlant, floor)
             side += 1
             
     elif buildingStreet == "Middle":
         while side < 4:
             if side % 2 == 0:
-                lastModName = generateFacade.generateBuildingFacadeFromPrevious(side, colX, colY, cFloor, size)
+                lastModName, buildingPlant = generateFacade.generateBuildingFacadeFromPrevious(side, colY, colX, cFloor, size, buildingPlant, floor)
             else:
                 lastModName = generateFacade.generateBuildingFacadeFlat(side, colY, colX, cFloor, size)
             side += 1
@@ -81,14 +81,25 @@ def generateBuildingFloorFromPrevious(cFloor, colX, colY, size, buildingPlant):
                 if side == 0:
                     lastModName = generateFacade.generateBuildingFacadeFlat(side, colX, colY, cFloor, size)
                 else:
-                    lastModName = generateFacade.generateBuildingFacadeFromPrevious(side, colX, colY, cFloor, size)
+                    lastModName, buildingPlant = generateFacade.generateBuildingFacadeFromPrevious(side, colY, colX, cFloor, size, buildingPlant, floor)
             else:
                 if side == 1:
                     lastModName = generateFacade.generateBuildingFacadeFlat(side, colY, colX, cFloor, size)
                 else:
-                    lastModName = generateFacade.generateBuildingFacadeFromPrevious(side, colY, colX, cFloor, size)
+                    lastModName, buildingPlant = generateFacade.generateBuildingFacadeFromPrevious(side, colY, colX, cFloor, size, buildingPlant, floor)
             side += 1
-    
+         
+    if cFloor == (floor - 1):
+        side = 0
+        while side < 4:                
+            # Generate upper roof 
+            if side % 2 == 0:
+                lastModName = generateFacade.generateUpperModuleRoof(side, cFloor, colX, colY, size, buildingPlant, lastModName)
+            else:
+                lastModName = generateFacade.generateUpperModuleRoof(side, cFloor, colY, colX, size, buildingPlant, lastModName)
+            
+            side += 1
+        
     return lastModName
 
 # Generate a roof for the building                                                         

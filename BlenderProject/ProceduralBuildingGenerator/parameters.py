@@ -39,6 +39,17 @@ class BuildingParameters(PropertyGroup):
         max = 20
         )
         
+    buildingScale : FloatVectorProperty(
+        name="Building Scale",
+        description="Scale of the building",
+        subtype="XYZ",
+        precision=2,
+        size=3,
+        default=(1.0,1.0, 1.0),
+        min=0.0,
+        max=20.0
+        )
+        
     rowY : IntProperty(
         name="Depth:",
         description="Number of modules in Y axis",
