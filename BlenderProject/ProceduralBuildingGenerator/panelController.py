@@ -90,14 +90,7 @@ class WindowPanelPBG(BaseClassPBG, bpy.types.Panel):
             row = box.row()
             row.label(text="Texture parameters", icon='BRUSH_DATA')
             
-            # Window colors
-            row = box.row()
-            mat = floorObj.objects[0].data.materials["Frame"]
-            row.prop(mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"], "default_value", text="Frame color")
-            
-            row = box.row()
-            mat = floorObj.objects[0].data.materials["Glass"]
-            row.prop(mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"], "default_value", text="Glass color")
+
         
         else:
             box = layout.box()
@@ -223,14 +216,7 @@ class DoorPanelPBG(BaseClassPBG, bpy.types.Panel):
             row = box.row()
             row.label(text="Texture parameters", icon='BRUSH_DATA')
             
-            # Window colors
-            row = box.row()
-            mat = floorObj.objects[0].data.materials["Frame Door"]
-            row.prop(mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"], "default_value", text="Frame color")
-            
-            row = box.row()
-            mat = floorObj.objects[0].data.materials["Glass Door"]
-            row.prop(mat.node_tree.nodes["Principled BSDF"].inputs["Base Color"], "default_value", text="Glass color")
+          
         
         else:
             box = layout.box()

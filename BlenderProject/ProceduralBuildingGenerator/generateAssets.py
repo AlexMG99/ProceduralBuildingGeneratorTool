@@ -9,13 +9,13 @@ imp.reload(utilities)
 imp.reload(material)
 
 # Generate the window
-def generateWindow(obj, windowSize, windowType):
+def generateWindow(obj, windowHeight, windowType):
     # Go to edit mode, edge selection modes
     bpy.ops.mesh.select_all(action = 'DESELECT')
     bpy.ops.object.mode_set( mode = 'EDIT')
     bpy.ops.mesh.select_mode( type = 'FACE')
     
-    utilities.selectFaceByIndex(obj, 13)
+    utilities.selectFaceByIndex(obj, 4)
     
     # Set bottom material
     material.addMaterialBase(obj, "Bottom")
@@ -27,16 +27,16 @@ def generateWindow(obj, windowSize, windowType):
     
     # Generate window frame
     bpy.ops.mesh.inset(thickness=bpy.context.scene.buildingParameters.windowFrame, depth=0)
-    bpy.ops.mesh.inset(thickness=0.02, depth=0)
+    bpy.ops.mesh.inset(thickness=0.0000001, depth=0)
     
     bpy.ops.mesh.select_more()
-    utilities.deselectFaceByIndex(obj, 17)
+    utilities.deselectFaceByIndex(obj, 13)
     
     bpy.ops.mesh.delete(type='FACE')
     
     # Extrude frame
-    it = 18
-    while it < 22:
+    it = 14
+    while it < 18:
         utilities.selectFaceByIndex(obj, it)
         it += 1
     
@@ -47,11 +47,11 @@ def generateWindow(obj, windowSize, windowType):
     bpy.ops.mesh.select_all(action = 'DESELECT')                                                         
     
     # Generate window
-    utilities.selectFaceByIndex(obj, 17)
+    utilities.selectFaceByIndex(obj, 13)
     if windowType == "Cross":
         generateOneWindow(obj)
     elif windowType == "Vertical":
-        generateTwoWindows(obj, windowSize)
+        generateWindowVertical(obj, windowHeight)
 
 
 def generateOneWindow(obj):
@@ -104,13 +104,14 @@ def generateOneWindow(obj):
                                     
                 
     
-def generateTwoWindows(obj, windowSize):
-    bpy.ops.transform.resize(value=(1.1, 0.6, 1.1), orient_type ='GLOBAL')
-    bpy.ops.transform.translate(value=(0, -0.4 * windowSize + 0.05, 0.25), orient_type ='GLOBAL')
+def generateWindowVertical(obj, windowHeight):
+    windowFrame = bpy.context.scene.buildingParameters.windowFrame
+    bpy.ops.transform.resize(value=(1.0 , 0.5, 1.0), orient_type ='GLOBAL')
+    bpy.ops.transform.translate(value=(0, -(windowHeight - windowFrame)* 0.5, 0.25), orient_type ='GLOBAL')
     
     bpy.ops.mesh.inset(thickness=0.05, depth=0)
     
-    utilities.deselectFaceByIndex(obj, 13)
+    utilities.deselectFaceByIndex(obj, 9)
     
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
                                                              "use_dissolve_ortho_edges":False, 
@@ -124,7 +125,7 @@ def generateTwoWindows(obj, windowSize):
     bpy.ops.mesh.select_more()
     bpy.ops.mesh.select_more()
     
-    windowOpen = random.uniform(0.1 * windowSize, windowSize * 0.6)
+    windowOpen = random.uniform(0.25 * windowHeight, windowHeight * 0.5)
     bpy.ops.mesh.duplicate_move(MESH_OT_duplicate={"mode":1}, TRANSFORM_OT_translate={"value":(0, windowOpen, - 0.12), "orient_type":'GLOBAL'})
 
 # Create simple door    
@@ -202,13 +203,14 @@ def generateBalconyWindow(obj, windowSize):
     material.addMaterialBase(obj, "Frame")
     
     # Generate window frame
-    bpy.ops.mesh.inset(thickness=bpy.context.scene.buildingParameters.windowFrame, depth=0)
-    bpy.ops.mesh.inset(thickness=0.02, depth=0)
+    bpy.ops.mesh.inset(thickness=bpy.context.scene.buildingParameters.balconyFrame, depth=0)
+    bpy.ops.mesh.inset(thickness=0.0000001, depth=0)
     
     bpy.ops.mesh.select_more()
     utilities.deselectFaceByIndex(obj, 10)
     
     bpy.ops.mesh.delete(type='FACE')
+    
     
     # Extrude frame
     it = 11
@@ -227,8 +229,9 @@ def generateBalconyWindow(obj, windowSize):
     generateWindowHorizontal(obj, windowSize)
     
 def generateWindowHorizontal(obj, windowSize):
-    bpy.ops.transform.resize(value=(0.5, 1.05, 1.1), orient_type ='GLOBAL')
-    bpy.ops.transform.translate(value=(0.4, 0, 0.25), orient_type ='GLOBAL')
+    balconyFrame = bpy.context.scene.buildingParameters.balconyFrame
+    bpy.ops.transform.resize(value=(0.5 , 1.0, 1.0), orient_type ='GLOBAL')
+    bpy.ops.transform.translate(value=((windowSize - balconyFrame)* 0.5 , 0, 0.25), orient_type ='GLOBAL')
     
     bpy.ops.mesh.inset(thickness=0.05, depth=0)
     
@@ -246,5 +249,6 @@ def generateWindowHorizontal(obj, windowSize):
     bpy.ops.mesh.select_more()
     bpy.ops.mesh.select_more()
     
-    windowOpen = random.uniform(0.5 * windowSize, windowSize * 0.8)
+    windowOpen = random.uniform(0.25 * windowSize, windowSize * 0.5)
     bpy.ops.mesh.duplicate_move(MESH_OT_duplicate={"mode":1}, TRANSFORM_OT_translate={"value":(-windowOpen, 0.0, - 0.12), "orient_type":'GLOBAL'})
+    

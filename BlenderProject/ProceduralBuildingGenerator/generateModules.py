@@ -40,7 +40,7 @@ def generateModuleWindow(obj, windowSize, windowType):
                                                 "smoothness":0, 
                                                 "falloff":'INVERSE_SQUARE', 
                                                 "object_index":0, 
-                                                "edge_index":1, 
+                                                "edge_index":5, 
                                                 "mesh_select_mode_init":(False, True, False)}, 
                                                 TRANSFORM_OT_edge_slide={"value":0})
     
@@ -51,9 +51,6 @@ def generateModuleWindow(obj, windowSize, windowType):
     bpy.ops.mesh.select_all( action = 'DESELECT' )
     utilities.selectFaceByIndex(obj, 6)
     
-    # Inset window frame
-    bpy.ops.mesh.inset(thickness=0.2, depth=0)
-    
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
                                                              "use_dissolve_ortho_edges":False, 
                                                              "mirror":False}, 
@@ -61,7 +58,7 @@ def generateModuleWindow(obj, windowSize, windowType):
     
     # Generate UVS and add material to object
     bpy.ops.mesh.select_all(action = 'DESELECT') #Deselecting all
-    idx = [1, 4, 10, 15]
+    idx = [1, 2, 8, 13]
     material.generateUVS(obj, idx)
     
     
@@ -117,7 +114,7 @@ def generateModuleDoor(obj, doorWidth, doorHeight):
                                                 TRANSFORM_OT_edge_slide={"value":doorHeight})
                                                 
     
-    # Deselect all and select middle face
+    # Deselect all and select middle faces
     bpy.ops.mesh.select_all( action = 'DESELECT' )
     utilities.selectFaceByIndex(obj, 2)
     

@@ -90,7 +90,7 @@ class BuildingParameters(PropertyGroup):
         description="Width of the window frame",
         default = 0.1,
         min = 0.05,
-        max = 0.15
+        max = 0.1
         )
         
     windowSize : FloatVectorProperty(
@@ -118,9 +118,9 @@ class BuildingParameters(PropertyGroup):
     balconyFrame : FloatProperty(
         name="Frame width",
         description="Width of the balcony frame",
-        default = 0.15,
+        default = 0.1,
         min = 0.05,
-        max = 0.10
+        max = 0.1
         )
     
     balconySize : FloatVectorProperty(
