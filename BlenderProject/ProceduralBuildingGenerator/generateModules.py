@@ -145,6 +145,71 @@ def generateModuleDoor(obj, doorWidth, doorHeight):
     # Rotate building 90 degrees to align it with the building
     bpy.ops.object.mode_set( mode = 'OBJECT' )
     bpy.ops.transform.rotate(value=-1.5708, orient_axis='X', orient_type='GLOBAL')
+
+# Generate door module
+def generateModuleBalcony(obj, balconyWidth, balconyHeight):
+    
+    bpy.data.objects[obj.name].select_set(True)
+    
+    # Go to edit mode, face selection modes
+    bpy.ops.object.mode_set( mode = 'EDIT' )
+    bpy.ops.mesh.select_mode( type = 'FACE' )
+    bpy.ops.mesh.select_all( action = 'SELECT' )
+    
+    # Generate the window frame ----------------------------------------------------------------------------- #
+    
+    # Cut window in two
+    bpy.ops.mesh.loopcut_slide(MESH_OT_loopcut={"number_cuts":1, 
+                                                "smoothness":0, 
+                                                "falloff":'INVERSE_SQUARE', 
+                                                "object_index":0, 
+                                                "edge_index":1, 
+                                                "mesh_select_mode_init":(False, True, False)}, 
+                                                TRANSFORM_OT_edge_slide={"value":0})
+    
+    # Apply bevel                                            
+    bpy.ops.mesh.bevel(offset=balconyWidth, offset_pct=0, affect='EDGES')
+    
+    
+    # Cut in half the plane
+    bpy.ops.mesh.loopcut_slide(MESH_OT_loopcut={"number_cuts":1, 
+                                                "smoothness":0, 
+                                                "falloff":'INVERSE_SQUARE', 
+                                                "object_index":0, 
+                                                "edge_index":1, 
+                                                "mesh_select_mode_init":(False, True, False)}, 
+                                                TRANSFORM_OT_edge_slide={"value":balconyHeight})
+                                                
+    
+    # Deselect all and select middle face
+    bpy.ops.mesh.select_all( action = 'DESELECT' )
+    utilities.selectFaceByIndex(obj, 2)
+    
+    bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
+                                                             "use_dissolve_ortho_edges":False, 
+                                                             "mirror":False}, 
+                                                             TRANSFORM_OT_translate={"value":(0, 0, -0.25)})
+    
+    # Generate UVS and add material to object
+    bpy.ops.mesh.select_all(action = 'DESELECT') #Deselecting all
+    idx = [1,8,9,15]
+    material.generateUVS(obj, idx)
+    
+    # Select wall texture or color
+    if(bpy.context.scene.textureParameters.wallTexture == True):
+        material.addMaterial(obj, bpy.context.scene.textureParameters.wallTextures)
+    else:
+        material.addMaterialBase(obj, "Wall 1")
+    
+    # ------------------------------------------------------------------------------------------------------ #
+                                                         
+    # Generate Window
+    generateAssets.generateBalconyWindow(obj, balconyWidth)
+    
+    # Rotate building 90 degrees to align it with the building
+    bpy.ops.object.mode_set( mode = 'OBJECT' )
+    bpy.ops.transform.rotate(value=-1.5708, orient_axis='X', orient_type='GLOBAL')
+
     
 # Generate module wall
 def generateModuleWall(obj):

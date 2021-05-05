@@ -88,14 +88,44 @@ class BuildingParameters(PropertyGroup):
     windowFrame : FloatProperty(
         name="Frame width",
         description="Width of the window frame",
-        default = 0.15,
+        default = 0.1,
         min = 0.05,
-        max = 0.10
+        max = 0.15
         )
         
     windowSize : FloatVectorProperty(
         name="Window size",
         description="Size of the window",
+        subtype="XYZ",
+        precision=2,
+        size=2,
+        default=(1.0,1.0),
+        min=0.5,
+        max=1.0
+        )
+        
+    balconyOuterSize : FloatVectorProperty(
+        name="Balcony outer size",
+        description="Size of the balcony outer construction",
+        subtype="XYZ",
+        precision=2,
+        size=3,
+        default=(1.0,1.0,1.0),
+        min=0.5,
+        max=1.0
+        ) 
+    
+    balconyFrame : FloatProperty(
+        name="Frame width",
+        description="Width of the balcony frame",
+        default = 0.15,
+        min = 0.05,
+        max = 0.10
+        )
+    
+    balconySize : FloatVectorProperty(
+        name="Balcony size",
+        description="Size of the balcony",
         subtype="XYZ",
         precision=2,
         size=2,
@@ -159,6 +189,16 @@ class TextureParameters(PropertyGroup):
        size=4,
        min=0.0, max=1.0,
        description="Chose color of the window frame"
+       )
+    
+    balconyColor : FloatVectorProperty(  
+       name="Balcony Color",
+       subtype='COLOR',
+       default=(0.0, 0.0, 0.0, 1.0),
+       precision=2,
+       size=4,
+       min=0.0, max=1.0,
+       description="Chose color of the balcony "
        )
     
     glassColor : FloatVectorProperty(  

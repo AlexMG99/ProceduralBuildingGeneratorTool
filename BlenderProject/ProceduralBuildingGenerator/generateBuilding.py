@@ -40,8 +40,9 @@ def generateBuilding():
     
     buildingParameters = bpy.context.scene.buildingParameters
     
-    generateBuildingStructure(buildingParameters.numFloor, buildingParameters.rowX, buildingParameters.rowY, bpy.context.scene.buildingParameters.moduleSize)
-    # generateBuildingFacade(0, 1, 1, 0, buildingParameters.moduleSize)
+    # generateBuildingStructure(buildingParameters.numFloor, buildingParameters.rowX, buildingParameters.rowY, bpy.context.scene.buildingParameters.moduleSize)
+    buildingPlant = [False] * (2 * buildingParameters.rowX + 2* buildingParameters.rowY)
+    generateFacade.generateBuildingFacade(0, 1, 1, 0, buildingParameters.moduleSize, buildingPlant)
 
 # Generate the building
 def generateBuildingStructure(floor, colX, colY, size):

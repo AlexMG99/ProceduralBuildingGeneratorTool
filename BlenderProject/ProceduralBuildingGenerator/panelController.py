@@ -124,6 +124,57 @@ class WindowPanelPBG(BaseClassPBG, bpy.types.Panel):
             
             row = box.row()
             row.prop(context.scene.textureParameters, "glassColor", text="Glass color")
+            
+class BalconyPanelPBG(BaseClassPBG, bpy.types.Panel):
+    bl_label = "Balcony parameters"
+    bl_idname = "NODE_PT_BALCONYPANELPBG"
+    bl_parent_id = "NODE_PT_MAINPANELPBG"
+    
+    def draw(self, context):
+        layout = self.layout
+        
+        # Window building parameters
+        floorObj = bpy.data.collections.get("Building")
+        
+        if(floorObj):
+            # Window texture parameters
+            box = layout.box()
+            row = box.row()
+            row.label(text="Texture parameters", icon='BRUSH_DATA')
+        
+        else:
+            box = layout.box()
+            row = box.row()
+            row.label(text="Construction parameters", icon='OBJECT_ORIGIN')
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "balconySize")
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "balconyFrame")
+            
+            # Outer structure
+            box = layout.box()
+            row = box.row()
+            row.label(text="Outer parameters", icon='OUTLINER_DATA_LIGHTPROBE')
+            
+            row = box.row()
+            row.prop(context.scene.buildingParameters, "balconyOuterSize")
+ 
+            # Window texture parameters
+            box = layout.box()
+            row = box.row()
+            row.label(text="Texture parameters", icon='BRUSH_DATA')
+            
+            # Window colors
+            row = box.row()
+            row.prop(context.scene.textureParameters, "windowColor", text="Frame color")
+            
+            row = box.row()
+            row.prop(context.scene.textureParameters, "glassColor", text="Glass color")
+            
+            row = box.row()
+            row.prop(context.scene.textureParameters, "balconyColor", text="Balcony color")
     
     
 class WallPanelPBG(BaseClassPBG, bpy.types.Panel):
@@ -244,7 +295,7 @@ class ButtonPBG(BaseClassPBG, bpy.types.Panel):
 
 
 # Register classes
-classes = (MainPanelPBG, WindowPanelPBG, DoorPanelPBG, WallPanelPBG, ToolPanelPBG, ButtonPBG)
+classes = (MainPanelPBG, WindowPanelPBG, BalconyPanelPBG, DoorPanelPBG, WallPanelPBG, ToolPanelPBG, ButtonPBG)
 
 def register():
     for cls in classes:
