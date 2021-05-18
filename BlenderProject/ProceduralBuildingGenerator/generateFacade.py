@@ -39,18 +39,6 @@ def generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant):
         # Get created cube
         plane = bpy.context.selected_objects[0]
         plane.name = "Module " + str(side) + "." + str(i)
-            
-        # Generate Module and move
-        """ rand = random.randint(0, 1)
-        if rand == 0:
-            generateModuleWindow(plane)
-        else:
-            generateModuleWall(plane) """
-        
-        # Add door
-        """if cFloor == 0 and side == 0 and i == int(colX * 0.5):
-            generateModules.generateModuleDoor(plane, 0.5, 0.75)
-        else:"""
         
         # Random facade Generation ----------------------------------------------------------------------------------------------------- #
         # Building one module out
@@ -142,8 +130,8 @@ def generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant):
         # Generate module 
         doorRand = random.randint(0, 10)
         if cFloor == 0 and side == 0 and hasDoor == False and turned == False and (doorRand == 0 or i == colX - 1):
-            #generateModules.generateModuleBalcony(plane, buildingParameters.balconySize[0], buildingParameters.balconySize[1])
-            #generateModules.generateModuleWindow(plane, buildingParameters.windowSize, "Vertical")
+            # generateModules.generateModuleBalcony(plane, buildingParameters.balconySize[0], buildingParameters.balconySize[1])
+            # generateModules.generateModuleWindow(plane, buildingParameters.windowSize, "Vertical")
             generateModules.generateModuleDoor(plane, buildingParameters.doorSize[0], buildingParameters.doorSize[1])
             hasDoor = True
         else:

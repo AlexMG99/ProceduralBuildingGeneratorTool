@@ -89,8 +89,6 @@ class WindowPanelPBG(BaseClassPBG, bpy.types.Panel):
             box = layout.box()
             row = box.row()
             row.label(text="Texture parameters", icon='BRUSH_DATA')
-            
-
         
         else:
             box = layout.box()
@@ -257,9 +255,13 @@ class ToolPanelPBG(BaseClassPBG, bpy.types.Panel):
         row = box.row()
         row.prop(context.scene.utilitiesParameters, "edgeIdx", text="Index")
         row.prop(context.scene.utilitiesParameters, "objName")
+        
         row = box.row()
         row.operator(SelectEdge.bl_idname, text="Select Object Edge")
         row.operator(SelectFace.bl_idname, text="Select Object Face")
+        
+        row = box.row()
+        row.operator(GenerateMaterials.bl_idname, text="Generate Materials")
         
 class ButtonPBG(BaseClassPBG, bpy.types.Panel):
     bl_label = "Button action"

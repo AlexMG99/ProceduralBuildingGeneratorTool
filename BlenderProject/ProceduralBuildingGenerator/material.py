@@ -112,7 +112,13 @@ def createMaterial(obj, texName):
     # texturePath = bpy.path.abspath(cwd + "/textures/")
     texturePath = bpy.path.abspath(cwd + "/2.91/scripts/startup/pbg/textures/")
     
-    # Load Images
+    # Rename textures
+    if texName == "Glass Door":
+        texName = "Glass"
+    elif texName == "Frame Door":
+        texName = "Door"
+        
+    # Load Images    
     imgDiffuse = bpy.data.images.load(texturePath + texName + "_Diffuse.tif")
     print(texturePath + texName + "_Diffuse")
     imgNormal = bpy.data.images.load(texturePath + texName + "_Normal.tif")

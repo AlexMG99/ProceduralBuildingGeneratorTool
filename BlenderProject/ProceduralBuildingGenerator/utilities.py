@@ -4,10 +4,12 @@ import mathutils
 from mathutils import Vector 
 
 from pbg import parameters
+from pbg import material
 
 # Reload module
 import imp
 imp.reload(parameters)
+imp.reload(material)
 
 
 # Select object edge by index operator
@@ -155,19 +157,49 @@ def resizeObject(obj, scale):
     bpy.ops.transform.scale = scale
 
     bpy.ops.object.mode_set( mode = 'OBJECT')
+    
+    
+# Generate Materials to all the objects
+class GenerateMaterials(bpy.types.Operator):
+    bl_label = "Generate materials"
+    bl_idname = "pbg.generatematerials"
+    
+    def execute(self, context):
+        generateMaterials()
+        
+        return{'FINISHED'}
 
+def generateMaterials():
+    
+    # Generate Plane
+    bpy.ops.mesh.primitive_plane_add()
+    plane = bpy.context.selected_objects[0]
+    
+    # Add material
+    material.addMaterial(plane, "Glass")
+    material.addMaterial(plane, "Glass Door")
+    material.addMaterial(plane, "Frame Door")
+    material.addMaterial(plane, "Frame")
+    material.addMaterial(plane, "Bottom")
+    material.addMaterial(plane, "Brick")
+    material.addMaterial(plane, "Roof")
+    material.addMaterialBase(plane, "Wall 1")
+    
+    
+    
 # Class Inizialization
 def register():
     bpy.utils.register_class(SelectEdge)
     bpy.utils.register_class(SelectFace)
     bpy.utils.register_class(ResizeObject)
+    bpy.utils.register_class(GenerateMaterials)
 
 
 def unregister():
     bpy.utils.unregister_class(SelectEdge)
     bpy.utils.unregister_class(SelectFace)
     bpy.utils.unregister_class(ResizeObject)
-
+    bpy.utils.unregister_class(GenerateMaterials)
 
 if __name__ == "__main__":
     register()
