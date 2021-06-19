@@ -370,7 +370,7 @@ def balconyCheck(pos, colX, previousBuildingPlant, nextBuildingPlant, buildingPl
             else:
                 module = buildingBalcony[pos] = "Solo"
         if pos == colX - 1:
-            if buildingBalcony[pos - 1] == "None":
+            if buildingBalcony[pos - 1] == "None" and previousBuildingPlant == buildingPlant:
                 module = buildingBalcony[pos] = "Solo"
             else:
                 module = buildingBalcony[pos] = "Left"

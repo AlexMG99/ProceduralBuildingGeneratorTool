@@ -1,5 +1,5 @@
 import bpy, bmesh
-import random
+import random as rand
 
 from pbg import utilities
 from pbg import material
@@ -14,6 +14,12 @@ imp.reload(generateAssets)
 def generateModuleWindow(obj, windowSize, windowType):
     
     bpy.data.objects[obj.name].select_set(True)
+    
+    # Randomness
+    buildingParameters = bpy.context.scene.buildingParameters
+    
+    windowSize[0] += rand.uniform(-0.1, 0.1) * buildingParameters.randomnessBuilding 
+    windowSize[1] += rand.uniform(-0.1, 0.1) * buildingParameters.randomnessBuilding 
     
     # Go to edit mode, face selection modes
     bpy.ops.object.mode_set( mode = 'EDIT' )
@@ -84,6 +90,12 @@ def generateModuleDoor(obj, doorWidth, doorHeight):
     
     bpy.data.objects[obj.name].select_set(True)
     
+    # Randomness
+    buildingParameters = bpy.context.scene.buildingParameters
+    
+    doorWidth += rand.uniform(-0.1, 0.1) * buildingParameters.randomnessBuilding 
+    doorHeight += rand.uniform(-0.1, 0.1) * buildingParameters.randomnessBuilding 
+    
     # Go to edit mode, face selection modes
     bpy.ops.object.mode_set( mode = 'EDIT' )
     bpy.ops.mesh.select_mode( type = 'FACE' )
@@ -147,6 +159,13 @@ def generateModuleDoor(obj, doorWidth, doorHeight):
 def generateModuleBalcony(obj, balconyWidth, balconyHeight, balconyType):
     
     bpy.data.objects[obj.name].select_set(True)
+    
+    # Randomness
+    buildingParameters = bpy.context.scene.buildingParameters
+    
+    balconyWidth += rand.uniform(-0.1, 0.1) * buildingParameters.randomnessBuilding 
+    balconyHeight += rand.uniform(-0.1, 0.1) * buildingParameters.randomnessBuilding     
+    
     
     # Go to edit mode, face selection modes
     bpy.ops.object.mode_set( mode = 'EDIT' )
