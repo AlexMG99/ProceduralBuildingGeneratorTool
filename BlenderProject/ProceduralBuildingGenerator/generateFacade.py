@@ -27,7 +27,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant):
     closed = False
     
     hasDoor = False
-    
+
     buildingParameters = bpy.context.scene.buildingParameters
     
     while i < colX:
@@ -50,7 +50,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant):
                 # Module Outside
                 if turnBuilding == 1:
                     advancement -= 1.0
-                    bpy.ops.transform.rotate(value=1.5708, orient_axis='Y', orient_type='LOCAL')
+                    bpy.ops.transform.rotate(value=-1.5708, orient_axis='Y', orient_type='LOCAL')
                     turnBuilding = 2
                     turned = True
                     opened = True
@@ -70,7 +70,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant):
                 
                 if turnBuilding == 1 or i == colX - 1:    
                     advancement -= 1.0
-                    bpy.ops.transform.rotate(value=-1.5708, orient_axis='Y', orient_type='LOCAL')
+                    bpy.ops.transform.rotate(value=1.5708, orient_axis='Y', orient_type='LOCAL')
                     turnBuilding = 2
                     turned = True
                     closed = True
@@ -93,7 +93,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant):
                 # Module Outside
                 if turnBuilding == 1:
                     advancement -= 1.0
-                    bpy.ops.transform.rotate(value=1.5708, orient_axis='Y', orient_type='LOCAL')
+                    bpy.ops.transform.rotate(value=-1.5708, orient_axis='Y', orient_type='LOCAL')
                     turnBuilding = 2
                     turned = True
                     opened = True
@@ -111,8 +111,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant):
             # Module inside
             if opened == True and closed == False and (colX - fromLast) == i:         
                 advancement -= 1.0
-                print(str(colX - fromLast))
-                bpy.ops.transform.rotate(value=-1.5708, orient_axis='Y', orient_type='LOCAL')
+                bpy.ops.transform.rotate(value=1.5708, orient_axis='Y', orient_type='LOCAL')
                 turnBuilding = 2
                 turned = True
                 closed = True
@@ -130,22 +129,25 @@ def generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant):
         # Generate module 
         doorRand = random.randint(0, 10)
         if cFloor == 0 and side == 0 and hasDoor == False and turned == False and (doorRand == 0 or i == colX - 1):
-            generateModules.generateModuleBalcony(plane, buildingParameters.balconySize[0], buildingParameters.balconySize[1], "Right")
+            # generateModules.generateModuleBalcony(plane, buildingParameters.balconyOuterSize[0], buildingParameters.balconyOuterSize[1], "Middle")
             # generateModules.generateModuleWindow(plane, buildingParameters.windowSize, "Vertical")
-            # generateModules.generateModuleDoor(plane, buildingParameters.doorSize[0], buildingParameters.doorSize[1])
+            generateModules.generateModuleDoor(plane, buildingParameters.doorSize[0], buildingParameters.doorSize[1])
             hasDoor = True
         else:
-            generateModule(plane, turned, buildingParameters)
+            if turned == True:
+                generateModules.generateModuleWall(plane)
+            else:    
+                generateModules.generateModuleWindow(plane, buildingParameters.windowSize, buildingParameters.windowType)
         
-        if opened == True and closed == False and turned == False:
+        if turned != True and closed == False:
             if side == 0:
-                buildingPlant[i] = True   
+                buildingPlant[i] = opened   
             elif side == 1:
-                buildingPlant[colX + i] = True    
+                buildingPlant[colY + i] = opened    
             elif side == 2:
-                buildingPlant[colY + colX + i] = True   
+                buildingPlant[colY + colX + i] = opened   
             elif side == 3:
-                buildingPlant[colY * 2 + colX + i] = True   
+                buildingPlant[colY * 2 + colX + i] = opened   
         
         # Set module correct transformation
         bpy.data.objects[plane.name].select_set(True)  
@@ -177,7 +179,6 @@ def generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant):
         if opened == True and bpy.context.scene.buildingParameters.buildingType == 'Random':
             fromLast += 1
         
-        
     return plane.name, buildingPlant
 
 # Generate one building side from previous                                                             
@@ -192,7 +193,13 @@ def generateBuildingFacadeFromPrevious(side, colX, colY, cFloor, size, buildingP
     
     buildingParameters = bpy.context.scene.buildingParameters
     
-    nextBuildingModule = 0
+    buildingBalcony = ["None"] * colX
+    
+    nextBuildingModule = -1
+    nextNextBuildingModule = -1
+    previousBuildingModule = -1
+    
+    print(side)
     
     while i < colX:
         turned = False
@@ -206,18 +213,28 @@ def generateBuildingFacadeFromPrevious(side, colX, colY, cFloor, size, buildingP
         
         # Assign value to next module
         if side == 0 and i < colX:   
-            nextBuildingModule = buildingPlant[i]            
-        elif side == 1 and colY + colX:
-            nextBuildingModule = buildingPlant[colX + i]   
-        elif side == 2 and colX * 2 + colY:
-            nextBuildingModule = buildingPlant[colY + colX + i]  
-        elif side == 3 and colX * 2 + colY * 2:
+            nextBuildingModule = buildingPlant[i]
+            nextNextBuildingModule = buildingPlant[i + 1]
+            if i > 0:
+                previousBuildingModule = buildingPlant[i - 1]      
+        elif side == 1 and i < colX:
+            nextBuildingModule = buildingPlant[colY + i] 
+            nextNextBuildingModule = buildingPlant[colY + i + 1]   
+            previousBuildingModule = buildingPlant[colY + i - 1] 
+        elif side == 2 and i < colX:
+            nextBuildingModule = buildingPlant[colY + colX + i]
+            nextNextBuildingModule = buildingPlant[colY + colX +i + 1] 
+            previousBuildingModule = buildingPlant[colY + colX +i - 1]   
+        elif side == 3 and i < colX:
             nextBuildingModule = buildingPlant[colY * 2 + colX + i] 
+            previousBuildingModule = buildingPlant[colY * 2 + colX + i - 1] 
+            if i < colX - 1:
+                nextNextBuildingModule = buildingPlant[colY * 2 + colX + i + 1] 
         
         # Check next buildingPlant to open or close module
         if nextBuildingModule == True and opened == False:
             advancement -= 1.0
-            bpy.ops.transform.rotate(value=1.5708, orient_axis='Y', orient_type='LOCAL')
+            bpy.ops.transform.rotate(value=-1.5708, orient_axis='Y', orient_type='LOCAL')
             turned = True
             opened = True
         
@@ -232,7 +249,7 @@ def generateBuildingFacadeFromPrevious(side, colX, colY, cFloor, size, buildingP
             
         elif nextBuildingModule == False and opened == True and closed == False:
             advancement -= 1.0
-            bpy.ops.transform.rotate(value=-1.5708, orient_axis='Y', orient_type='LOCAL')
+            bpy.ops.transform.rotate(value=1.5708, orient_axis='Y', orient_type='LOCAL')
             turned = True
             closed = True
                 
@@ -246,7 +263,7 @@ def generateBuildingFacadeFromPrevious(side, colX, colY, cFloor, size, buildingP
                 bpy.ops.transform.translate(value=(1.0, 0.0, 0.0), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
         
         # Generate module 
-        generateModule(plane, turned, buildingParameters)
+        generateModule(plane, turned, buildingParameters, i, colX, previousBuildingModule, nextNextBuildingModule, nextBuildingModule, buildingBalcony)
         
         # Set module correct transformation
         bpy.data.objects[plane.name].select_set(True)  
@@ -274,6 +291,8 @@ def generateBuildingFacadeFromPrevious(side, colX, colY, cFloor, size, buildingP
         else:
             advancement += 2.0
             i += 1
+        
+        print(buildingPlant[i])
         
     return plane.name, buildingPlant
 
@@ -315,11 +334,48 @@ def generateBuildingFacadeFlat( side, colX, colY, cFloor, size):
         
     return plane.name
 
-def generateModule(plane, turned, buildingParameters, cFloor):
+def generateModule(plane, turned, buildingParameters, pos, colX, previousBuildingPlant, nextNextBuildingPlant, nextBuildingPlant, buildingBalcony):
     if turned == True:
         generateModules.generateModuleWall(plane)
     else:
-        generateModules.generateModuleWindow(plane, buildingParameters.windowSize, buildingParameters.windowType)
+        module = balconyCheck(pos, colX, previousBuildingPlant, nextNextBuildingPlant, nextBuildingPlant, buildingBalcony)
+        
+        if module == "Window":
+            generateModules.generateModuleWindow(plane, buildingParameters.windowSize, buildingParameters.windowType)
+        elif module == "Left":
+            generateModules.generateModuleBalcony(plane, buildingParameters.balconyOuterSize[0], buildingParameters.balconyOuterSize[1], "Left")
+        elif module == "Middle":
+            generateModules.generateModuleBalcony(plane, buildingParameters.balconyOuterSize[0], buildingParameters.balconyOuterSize[1], "Middle")
+        elif module == "Right":
+            generateModules.generateModuleBalcony(plane, buildingParameters.balconyOuterSize[0], buildingParameters.balconyOuterSize[1], "Right")
+        elif module == "Solo":
+            generateModules.generateModuleBalcony(plane, buildingParameters.balconyOuterSize[0], buildingParameters.balconyOuterSize[1], "Solo")
+            
+
+
+def balconyCheck(pos, colX, previousBuildingPlant, nextBuildingPlant, buildingPlant, buildingBalcony):
+    balconyRand = random.randint(0, 2)
+    
+    module = "Window"
+    
+    if balconyRand == 0 or (pos != 0 and buildingBalcony[pos - 1] != "None"):
+        if pos < colX and buildingPlant == nextBuildingPlant:
+            if pos != 0 and buildingBalcony[pos - 1] != "None" and previousBuildingPlant == buildingPlant:
+                module = buildingBalcony[pos] = "Middle"
+            else:
+                module =  buildingBalcony[pos] = "Right"
+        elif pos < colX and buildingPlant != nextBuildingPlant:
+            if pos != 0 and buildingBalcony[pos - 1] != "None" and previousBuildingPlant == buildingPlant: 
+                module = buildingBalcony[pos] = "Left"
+            else:
+                module = buildingBalcony[pos] = "Solo"
+        if pos == colX - 1:
+            if buildingBalcony[pos - 1] == "None":
+                module = buildingBalcony[pos] = "Solo"
+            else:
+                module = buildingBalcony[pos] = "Left"
+  
+    return module
 
 def generateUpperModuleRoof(side, cFloor, colX, colY, size, buildingPlant, name):
     advancement = 0
