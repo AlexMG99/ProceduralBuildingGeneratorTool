@@ -144,7 +144,7 @@ def generateModuleDoor(obj, doorWidth, doorHeight):
     bpy.ops.transform.rotate(value=-1.5708, orient_axis='X', orient_type='GLOBAL')
 
 # Generate door module
-def generateModuleBalcony(obj, balconyWidth, balconyHeight):
+def generateModuleBalcony(obj, balconyWidth, balconyHeight, balconyType):
     
     bpy.data.objects[obj.name].select_set(True)
     
@@ -202,6 +202,68 @@ def generateModuleBalcony(obj, balconyWidth, balconyHeight):
                                                          
     # Generate Window
     generateAssets.generateBalconyWindow(obj, balconyWidth)
+    
+    # ------------------------------------------------------------------------------------------------------ #
+    
+    # External balcony surface
+    bpy.ops.mesh.select_all(action = 'DESELECT') #Deselecting all
+    idx = [9, 12, 14]
+    utilities.selectEdgesByIndex(obj.name, idx)
+    
+    # Create balcony floor
+    
+    bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
+                                                             "use_dissolve_ortho_edges":False, 
+                                                             "mirror":False}, 
+                                                             TRANSFORM_OT_translate={"value":(0, 0, balconyWidth * 0.75)})
+                                                             
+                                                             
+    bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
+                                                             "use_dissolve_ortho_edges":False, 
+                                                             "mirror":False}, 
+                                                             TRANSFORM_OT_translate={"value":(0, 0, balconyWidth * 0.2)})
+                                                             
+    bpy.ops.mesh.select_more()
+    bpy.ops.mesh.select_more()  
+    
+    bpy.ops.uv.cube_project(cube_size=1)
+    
+    bpy.ops.mesh.select_less()
+    
+    # Create balcony front wall
+    
+    bpy.ops.mesh.duplicate()
+    
+    bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
+                                                             "use_dissolve_ortho_edges":False, 
+                                                             "mirror":False}, 
+                                                             TRANSFORM_OT_translate={"value":(0, -balconyHeight, 0)})
+    bpy.ops.mesh.select_more()
+    bpy.ops.mesh.select_more()  
+    
+    bpy.ops.uv.cube_project(cube_size=1)                                                
+    
+    
+    # Close Balcony
+    if balconyType == "Solo":
+        idx = [44, 45]
+        utilities.selectFacesByIndex(obj, idx)
+    elif balconyType == "Left":
+        bpy.ops.mesh.select_all(action = 'DESELECT') 
+        utilities.selectFaceByIndex(obj, 44)
+    elif balconyType == "Right":
+        bpy.ops.mesh.select_all(action = 'DESELECT') 
+        utilities.selectFaceByIndex(obj, 45)
+        
+    if balconyType != "Middle":
+        bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
+                                                             "use_dissolve_ortho_edges":False, 
+                                                             "mirror":False}, 
+                                                             TRANSFORM_OT_translate={"value":(0, -balconyHeight, 0)})
+        
+        bpy.ops.mesh.select_more()
+        bpy.ops.uv.cube_project(cube_size=1)                                                         
+                                                            
     
     # Rotate building 90 degrees to align it with the building
     bpy.ops.object.mode_set( mode = 'OBJECT' )

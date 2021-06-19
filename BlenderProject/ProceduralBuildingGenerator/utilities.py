@@ -105,7 +105,7 @@ def selectEdgesByIndex(name, idx):
     bm = bmesh.from_edit_mesh(me)
     
     # notice in Bmesh polygons are called faces
-    bm.faces.ensure_lookup_table()
+    bm.edges.ensure_lookup_table()
     it = 0
     while it < len(idx):
         bm.edges[idx[it]].select_set(True)  # select index

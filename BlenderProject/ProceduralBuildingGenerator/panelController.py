@@ -213,9 +213,6 @@ class DoorPanelPBG(BaseClassPBG, bpy.types.Panel):
             box = layout.box()
             row = box.row()
             row.label(text="Texture parameters", icon='BRUSH_DATA')
-            
-          
-        
         else:
             box = layout.box()
             row = box.row()

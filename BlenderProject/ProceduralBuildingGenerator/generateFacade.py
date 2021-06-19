@@ -130,9 +130,9 @@ def generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant):
         # Generate module 
         doorRand = random.randint(0, 10)
         if cFloor == 0 and side == 0 and hasDoor == False and turned == False and (doorRand == 0 or i == colX - 1):
-            # generateModules.generateModuleBalcony(plane, buildingParameters.balconySize[0], buildingParameters.balconySize[1])
+            generateModules.generateModuleBalcony(plane, buildingParameters.balconySize[0], buildingParameters.balconySize[1], "Right")
             # generateModules.generateModuleWindow(plane, buildingParameters.windowSize, "Vertical")
-            generateModules.generateModuleDoor(plane, buildingParameters.doorSize[0], buildingParameters.doorSize[1])
+            # generateModules.generateModuleDoor(plane, buildingParameters.doorSize[0], buildingParameters.doorSize[1])
             hasDoor = True
         else:
             generateModule(plane, turned, buildingParameters)
@@ -315,12 +315,11 @@ def generateBuildingFacadeFlat( side, colX, colY, cFloor, size):
         
     return plane.name
 
-def generateModule(plane, turned, buildingParameters):
+def generateModule(plane, turned, buildingParameters, cFloor):
     if turned == True:
         generateModules.generateModuleWall(plane)
     else:
         generateModules.generateModuleWindow(plane, buildingParameters.windowSize, buildingParameters.windowType)
-
 
 def generateUpperModuleRoof(side, cFloor, colX, colY, size, buildingPlant, name):
     advancement = 0

@@ -31,7 +31,7 @@ def generateBuildingFloor(cFloor, colX, colY, size, buildingPlant):
     elif buildingStreet == "Middle":
         while side < 4:
             if side % 2 == 0:
-                lastModName = generateFacade.generateBuildingFacade(side, colX, colY, cFloor, size)
+                lastModName , buildingPlant = generateFacade.generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant)
             else:
                 lastModName = generateFacade.generateBuildingFacadeFlat(side, colY, colX, cFloor, size)
             side += 1
@@ -42,12 +42,12 @@ def generateBuildingFloor(cFloor, colX, colY, size, buildingPlant):
                 if side == 0:
                     lastModName = generateFacade.generateBuildingFacadeFlat(side, colX, colY, cFloor, size)
                 else:
-                    lastModName = generateFacade.generateBuildingFacade(side, colX, colY, cFloor, size)
+                    lastModName, buildingPlant = generateFacade.generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant)
             else:
                 if side == 1:
                     lastModName = generateFacade.generateBuildingFacadeFlat(side, colY, colX, cFloor, size)
                 else:
-                    lastModName = generateFacade.generateBuildingFacade(side, colY, colX, cFloor, size)
+                    lastModName , buildingPlant = generateFacade.generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant)
             side += 1
     
     # print(buildingPlant)
