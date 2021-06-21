@@ -1,13 +1,3 @@
-bl_info = {
-    "name" : "Procedural Building Generator",
-    "author" : "Alex Morales Garcia",
-    "version" : 1.0,
-    "location" : "View3d > Tool",
-    "warning" : "",
-    "wiki_url" : "",
-    "category" : "Procedural",
-}
-
 import bpy
 
 from pbg.generateBuilding import *
@@ -45,7 +35,7 @@ class MainPanelPBG(BaseClassPBG, bpy.types.Panel):
             row.prop(context.scene.buildingParameters, "buildingScale")
             
             row = box.row()
-            row.operator(ResizeObject.bl_idname, text="Resize building", icon='CON_SIZELIKE')
+            row.operator(ResizeObjectUtility.bl_idname, text="Resize building", icon='CON_SIZELIKE')
 
         else:
             row = box.row()
@@ -254,11 +244,11 @@ class ToolPanelPBG(BaseClassPBG, bpy.types.Panel):
         row.prop(context.scene.utilitiesParameters, "objName")
         
         row = box.row()
-        row.operator(SelectEdge.bl_idname, text="Select Object Edge")
-        row.operator(SelectFace.bl_idname, text="Select Object Face")
+        row.operator(SelectEdgeUtility.bl_idname, text="Select Object Edge")
+        row.operator(SelectFaceUtility.bl_idname, text="Select Object Face")
         
         row = box.row()
-        row.operator(GenerateMaterials.bl_idname, text="Generate Materials")
+        row.operator(GenerateMaterialsUtility.bl_idname, text="Generate Materials")
         
 class ButtonPBG(BaseClassPBG, bpy.types.Panel):
     bl_label = "Button action"

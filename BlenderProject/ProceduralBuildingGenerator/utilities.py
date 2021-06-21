@@ -13,7 +13,7 @@ imp.reload(material)
 
 
 # Select object edge by index operator
-class SelectFace(bpy.types.Operator):
+class SelectFaceUtility(bpy.types.Operator):
     bl_label = "Select face by number"
     bl_idname = "pbg.selectface"
     
@@ -83,7 +83,7 @@ def deselectFaceByIndex(obj, idx):
 
 
 # Select object edge by index operator
-class SelectEdge(bpy.types.Operator):
+class SelectEdgeUtility(bpy.types.Operator):
     bl_label = "Select Edge by number"
     bl_idname = "pbg.selectedge"
     
@@ -135,7 +135,7 @@ def selectEdgeByIdx(name, idx):
 
 
 # Select object edge by index operator
-class ResizeObject(bpy.types.Operator):
+class ResizeObjectUtility(bpy.types.Operator):
     bl_label = "Resize Object"
     bl_idname = "pbg.resizeobject"
     
@@ -160,7 +160,7 @@ def resizeObject(obj, scale):
     
     
 # Generate Materials to all the objects
-class GenerateMaterials(bpy.types.Operator):
+class GenerateMaterialsUtility(bpy.types.Operator):
     bl_label = "Generate materials"
     bl_idname = "pbg.generatematerials"
     
@@ -189,17 +189,17 @@ def generateMaterials():
     
 # Class Inizialization
 def register():
-    bpy.utils.register_class(SelectEdge)
-    bpy.utils.register_class(SelectFace)
-    bpy.utils.register_class(ResizeObject)
-    bpy.utils.register_class(GenerateMaterials)
+    bpy.utils.register_class(SelectEdgeUtility)
+    bpy.utils.register_class(SelectFaceUtility)
+    bpy.utils.register_class(ResizeObjectUtility)
+    bpy.utils.register_class(GenerateMaterialsUtility)
 
 
 def unregister():
-    bpy.utils.unregister_class(SelectEdge)
-    bpy.utils.unregister_class(SelectFace)
-    bpy.utils.unregister_class(ResizeObject)
-    bpy.utils.unregister_class(GenerateMaterials)
+    bpy.utils.unregister_class(SelectEdgeUtility)
+    bpy.utils.unregister_class(SelectFaceUtility)
+    bpy.utils.unregister_class(ResizeObjectUtility)
+    bpy.utils.unregister_class(GenerateMaterialsUtility)
 
 if __name__ == "__main__":
     register()
