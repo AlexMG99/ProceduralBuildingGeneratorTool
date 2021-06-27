@@ -176,11 +176,11 @@ def generateMaterials():
     plane = bpy.context.selected_objects[0]
     
     # Add material
-    material.addMaterial(plane, "Glass")
-    material.addMaterial(plane, "Glass Door")
-    material.addMaterial(plane, "Frame Door")
-    material.addMaterial(plane, "Frame")
-    material.addMaterial(plane, "Bottom")
+    material.addMaterialBase(plane, "Glass")
+    material.addMaterialBase(plane, "Glass Door")
+    material.addMaterialBase(plane, "Frame Door")
+    material.addMaterialBase(plane, "Frame")
+    material.addMaterialBase(plane, "Bottom")
     material.addMaterial(plane, "Brick")
     material.addMaterial(plane, "Roof")
     material.addMaterialBase(plane, "Wall 1")
