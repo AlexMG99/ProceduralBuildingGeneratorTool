@@ -109,7 +109,7 @@ def createMaterial(obj, texName):
     
     # TODO: Change relative path
     # texturePath = bpy.path.abspath(cwd + "/textures/")
-    texturePath = bpy.path.dirnam(bpy.path.dirname(os.path.abspath("material.py")) + "/textures/")
+    texturePath = bpy.path.dirname(os.path.dirname(os.path.abspath("material.py")) + "/textures/")
     
     # Rename textures
     if texName == "Glass Door":

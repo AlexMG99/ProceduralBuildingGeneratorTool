@@ -26,7 +26,7 @@ class BuildingParameters(PropertyGroup):
     numFloor : IntProperty(
         name="Floors:",
         description="Number of floors the building will have",
-        default = 1,
+        default = 3,
         min = 0,
         max = 10
         )
@@ -61,7 +61,7 @@ class BuildingParameters(PropertyGroup):
     randomnessBuilding : IntProperty(
         name="Randomness:",
         description="The higher the randomness, the higher differences between floors",
-        default = 1,
+        default = 0,
         min = 0,
         max = 5
         )
@@ -80,7 +80,7 @@ class BuildingParameters(PropertyGroup):
         subtype="XYZ",
         precision=2,
         size=2,
-        default=(1.0,1.0),
+        default=(0.75,0.9),
         min=0.45,
         max=0.75
         )
@@ -99,7 +99,7 @@ class BuildingParameters(PropertyGroup):
         subtype="XYZ",
         precision=2,
         size=2,
-        default=(1.0,1.0),
+        default=(0.75, 0.75),
         min=0.5,
         max=1.0
         )
@@ -110,7 +110,7 @@ class BuildingParameters(PropertyGroup):
         subtype="XYZ",
         precision=2,
         size=2,
-        default=(1.0,1.0),
+        default=(0.75, 0.5),
         min=0.5,
         max=1.0
         ) 
@@ -129,7 +129,7 @@ class BuildingParameters(PropertyGroup):
         subtype="XYZ",
         precision=2,
         size=2,
-        default=(1.0,1.0),
+        default=(0.75, 0.75),
         min=0.5,
         max=1.0
         )
