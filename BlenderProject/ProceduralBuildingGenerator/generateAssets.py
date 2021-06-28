@@ -61,7 +61,7 @@ def generateOneWindow(obj):
                                                 "smoothness":0, 
                                                 "falloff":'INVERSE_SQUARE', 
                                                 "object_index":0, 
-                                                "edge_index":54, 
+                                                "edge_index":47, 
                                                 "mesh_select_mode_init":(False, True, False)}, 
                                                 TRANSFORM_OT_edge_slide={"value":0})
     
@@ -73,7 +73,7 @@ def generateOneWindow(obj):
                                                 "smoothness":0, 
                                                 "falloff":'INVERSE_SQUARE', 
                                                 "object_index":0, 
-                                                "edge_index":52, 
+                                                "edge_index":67, 
                                                 "mesh_select_mode_init":(False, True, False)}, 
                                                 TRANSFORM_OT_edge_slide={"value":0})
                                             
@@ -81,7 +81,7 @@ def generateOneWindow(obj):
     bpy.ops.mesh.bevel(offset=0.06, offset_pct=0, affect='EDGES')
     
     # Glass creation
-    idx = [17, 36, 37, 41]
+    idx = [13, 32, 33, 37]
     utilities.selectFacesByIndex(obj, idx)
     
     bpy.ops.mesh.extrude_region_move(MESH_OT_extrude_region={"use_normal_flip":False, 
@@ -94,7 +94,7 @@ def generateOneWindow(obj):
     material.addMaterialBase(obj, "Frame")      
     
     # Glass material
-    idx = [37, 43, 44, 45]
+    idx = [33, 39, 40, 41]
     utilities.selectFacesByIndex(obj, idx)
     material.addMaterialBase(obj, "Glass")
     

@@ -130,7 +130,7 @@ def generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant):
         doorRand = random.randint(0, 10)
         if cFloor == 0 and side == 0 and hasDoor == False and turned == False and (doorRand == 0 or i == colX - 1):
             # generateModules.generateModuleBalcony(plane, buildingParameters.balconyOuterSize[0], buildingParameters.balconyOuterSize[1], "Middle")
-            # generateModules.generateModuleWindow(plane, buildingParameters.windowSize, "Vertical")
+            # generateModules.generateModuleWindow(plane, buildingParameters.windowSize, "Cross")
             generateModules.generateModuleDoor(plane, buildingParameters.doorSize[0], buildingParameters.doorSize[1])
             hasDoor = True
         else:
