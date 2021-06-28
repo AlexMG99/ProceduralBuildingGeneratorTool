@@ -3,13 +3,9 @@ import bpy, bmesh
 import mathutils 
 from mathutils import Vector 
 
-from pbg import parameters
-from pbg import material
+from . import parameters
+from . import material
 
-# Reload module
-import imp
-imp.reload(parameters)
-imp.reload(material)
 
 
 # Select object edge by index operator

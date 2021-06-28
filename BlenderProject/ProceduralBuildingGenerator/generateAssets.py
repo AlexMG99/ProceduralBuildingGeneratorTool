@@ -1,12 +1,9 @@
 import bpy, bmesh
 import random
 
-from pbg import utilities
-from pbg import material
+from . import utilities
+from . import material
 
-import imp
-imp.reload(utilities)
-imp.reload(material)
 
 # Generate the window
 def generateWindow(obj, windowHeight, windowType):

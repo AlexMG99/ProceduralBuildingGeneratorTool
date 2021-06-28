@@ -32,10 +32,6 @@ import os
 
 from . import utilities
 from . import parameters
-from . import generateAssets
-from . import generateModules
-from . import generateFacade
-from . import generateFloor
 from . import generateBuilding
 from . import panelController
 

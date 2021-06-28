@@ -4,15 +4,9 @@ import random
 from mathutils import Vector
 
 # Import rules fuinctions
-from pbg import generateModules
-from pbg import parameters
-from pbg import material
-
-# Reload module
-import imp
-imp.reload(parameters)
-imp.reload(generateModules)
-imp.reload(material)
+from . import generateModules
+from . import parameters
+from . import material
 
 # Generate one building side                                                             
 def generateBuildingFacade(side, colX, colY, cFloor, size, buildingPlant):

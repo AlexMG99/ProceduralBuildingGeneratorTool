@@ -6,17 +6,10 @@ import random
 from mathutils import Vector
 
 # Import rules fuinctions
-from pbg import generateModules
-from pbg import generateFacade
-from pbg import generateFloor
-from pbg import parameters
-
-# Reload module
-import imp
-imp.reload(parameters)
-imp.reload(generateModules)
-imp.reload(generateFacade)
-imp.reload(generateFloor)
+from . import generateModules
+from . import generateFacade
+from . import generateFloor
+from . import parameters
                 
 # Generate Building operator
 class GenerateBuilding(bpy.types.Operator):

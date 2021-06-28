@@ -1,13 +1,9 @@
 import bpy
 
-from pbg.generateBuilding import *
-from pbg.utilities import *
+from . import generateBuilding
+from . import utilities
 
-from pbg import parameters
-
-# Reload module
-import imp
-imp.reload(parameters)
+from . import parameters
 
 # Creates Blender Main Panel Controller
 class BaseClassPBG:
@@ -35,7 +31,7 @@ class MainPanelPBG(BaseClassPBG, bpy.types.Panel):
             row.prop(context.scene.buildingParameters, "buildingScale")
             
             row = box.row()
-            row.operator(ResizeObjectUtility.bl_idname, text="Resize building", icon='CON_SIZELIKE')
+            row.operator("pbg.resizeobject", text="Resize building", icon='CON_SIZELIKE')
 
         else:
             row = box.row()
@@ -244,11 +240,11 @@ class ToolPanelPBG(BaseClassPBG, bpy.types.Panel):
         row.prop(context.scene.utilitiesParameters, "objName")
         
         row = box.row()
-        row.operator(SelectEdgeUtility.bl_idname, text="Select Object Edge")
-        row.operator(SelectFaceUtility.bl_idname, text="Select Object Face")
+        row.operator("pbg.selectedge", text="Select Object Edge")
+        row.operator("pbg.selectface", text="Select Object Face")
         
         row = box.row()
-        row.operator(GenerateMaterialsUtility.bl_idname, text="Generate Materials")
+        row.operator("pbg.generatematerials", text="Generate Materials")
         
 class ButtonPBG(BaseClassPBG, bpy.types.Panel):
     bl_label = "Button action"
@@ -262,11 +258,11 @@ class ButtonPBG(BaseClassPBG, bpy.types.Panel):
         floorObj = bpy.data.collections.get("Building")
         if(floorObj):
             row = layout.row()
-            row.operator(RemoveBuilding.bl_idname, text="Remove building", icon='PANEL_CLOSE')
+            row.operator("pbg.removebuilding", text="Remove building", icon='PANEL_CLOSE')
         else:
             # Generate Building button
             row = layout.row()
-            row.operator(GenerateBuilding.bl_idname, text="Generate Building", icon='MESH_PLANE')
+            row.operator("pbg.generatebuilding", text="Generate Building", icon='MESH_PLANE')
 
 
 # Register classes

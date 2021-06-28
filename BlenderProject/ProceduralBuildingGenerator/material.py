@@ -1,12 +1,8 @@
 import bpy, bmesh
 import os
 
-from pbg import utilities
-from pbg import parameters
-
-import imp
-imp.reload(utilities)
-imp.reload(parameters)
+from . import utilities
+from . import parameters
 
 # Generate window UVS
 def generateUVS(obj, idx):
@@ -109,7 +105,8 @@ def createMaterial(obj, texName):
     
     # TODO: Change relative path
     # texturePath = bpy.path.abspath(cwd + "/textures/")
-    texturePath = bpy.path.dirname(os.path.dirname(os.path.abspath("material.py")) + "/textures/")
+    script_file = bpy.utils.user_resource('SCRIPTS', "addons")
+    texturePath = script_file + "/procedural_building_generator/textures/"
     
     # Rename textures
     if texName == "Glass Door":

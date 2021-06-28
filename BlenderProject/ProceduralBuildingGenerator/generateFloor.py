@@ -4,15 +4,9 @@ import random
 from mathutils import Vector
 
 # Import rules fuinctions
-from pbg import generateModules
-from pbg import generateFacade
-from pbg import parameters
-
-# Reload module
-import imp
-imp.reload(parameters)
-imp.reload(generateModules)
-imp.reload(generateFacade)
+from . import generateModules
+from . import generateFacade
+from . import parameters
 
 
 # Generate a building floor with 4 sides                                                             

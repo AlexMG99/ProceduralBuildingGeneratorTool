@@ -1,14 +1,10 @@
 import bpy, bmesh
 import random as rand
 
-from pbg import utilities
-from pbg import material
-from pbg import generateAssets
+from . import utilities
+from . import material
+from . import generateAssets
 
-import imp
-imp.reload(utilities)
-imp.reload(material)
-imp.reload(generateAssets)
 
 # Generate module window
 def generateModuleWindow(obj, windowSize, windowType):
