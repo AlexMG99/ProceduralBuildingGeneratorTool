@@ -106,11 +106,10 @@ def createMaterial(obj, texName):
     # Create new material
     mat = bpy.data.materials.new(name=texName)
     mat.use_nodes = True
-    cwd = os.getcwd()
     
     # TODO: Change relative path
     # texturePath = bpy.path.abspath(cwd + "/textures/")
-    texturePath = bpy.path.abspath(cwd + "/2.91/scripts/startup/pbg/textures/")
+    texturePath = bpy.path.dirnam(bpy.path.dirname(os.path.abspath("material.py")) + "/textures/")
     
     # Rename textures
     if texName == "Glass Door":

@@ -385,13 +385,13 @@ def generateUpperModuleRoof(side, cFloor, colX, colY, size, buildingPlant, name)
     
     while i < colX:
         # Assign value to next module
-        if side == 0 and i < colX:   
+        if side == 0:   
             nextBuildingModule = buildingPlant[i]            
-        elif side == 1 and colY + colX:
-            nextBuildingModule = buildingPlant[colX + i]   
-        elif side == 2 and colX * 2 + colY:
+        elif side == 1:
+            nextBuildingModule = buildingPlant[colY + i]   
+        elif side == 2:
             nextBuildingModule = buildingPlant[colY + colX + i]  
-        elif side == 3 and colX * 2 + colY * 2:
+        elif side == 3:
             nextBuildingModule = buildingPlant[colY * 2 + colX + i]
         
         if nextBuildingModule == True:    
@@ -414,7 +414,7 @@ def generateUpperModuleRoof(side, cFloor, colX, colY, size, buildingPlant, name)
             elif side == 2:
                 bpy.ops.transform.translate(value=(2.0 * (colX - 1) - advancement, - 2.0 * colY - 1.0, 2.0 * cFloor + size[1]), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
             elif side == 3:
-                bpy.ops.transform.translate(value=(-2.0, - 2.0 * (colX - 1) + advancement - 1.0, 2.0 * cFloor + size[1]), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
+                bpy.ops.transform.translate(value=(-2.0,  - 2.0 * (colX - 1) + advancement - 1.0, 2.0 * cFloor + size[1]), orient_type='GLOBAL', orient_matrix_type='GLOBAL', mirror=True)
         
         advancement += 2.0
         i += 1
